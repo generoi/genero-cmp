@@ -1,6 +1,6 @@
 # wp-plugin-boilerplate
 
-> A wordpress boilerplate plugin with which you can write ES6 JavaScript and SASS.
+> A boilerplate WordPress plugin
 
 ## Requirements
 

@@ -36,4 +36,9 @@
   <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
     <severity>0</severity>
   </rule>
+
+  <!-- Ignore missing namespace -->
+  <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+    <exclude-pattern>RoboFile.php</exclude-pattern>
+  </rule>
 </ruleset>
