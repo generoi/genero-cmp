@@ -4,8 +4,6 @@
  * libraries.
  */
 
-import PluginComponent from './plugin';
-import objectAssign from 'es6-object-assign';
+import PluginComponent from './component';
 
-objectAssign.polyfill();
 window.PluginComponent = new PluginComponent();

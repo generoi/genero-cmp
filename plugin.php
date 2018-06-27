@@ -3,7 +3,7 @@
 Plugin Name:        Plugin Boilerplate
 Plugin URI:         http://genero.fi
 Description:        A boilerplate WordPress plugin
-Version:            1.0.0
+Version:            0.1.0
 Author:             Genero
 Author URI:         http://genero.fi/
 License:            MIT License
@@ -12,28 +12,27 @@ License URI:        http://opensource.org/licenses/MIT
 namespace GeneroWP\PluginBoilerplate;
 
 use Puc_v4_Factory;
+use GeneroWP\Common\Singleton;
+use GeneroWP\Common\Assets;
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
+if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
+    require_once $composer;
+}
+
 class Plugin
 {
+    use Singleton;
+    use Assets;
 
-    private static $instance = null;
-    public $version = '1.0.0';
+    public $version = '0.1.0';
     public $plugin_name = 'wp-plugin-boilerplate';
     public $plugin_path;
     public $plugin_url;
     public $github_url = 'https://github.com/generoi/wp-plugin-boilerplate';
-
-    public static function get_instance()
-    {
-        if (null === self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
 
     public function __construct()
     {
@@ -52,18 +51,24 @@ class Plugin
     {
         add_action('wp_enqueue_scripts', [$this, 'register_assets']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+        add_action('init', [$this, 'load_textdomain']);
     }
 
     public function register_assets()
     {
-        wp_register_script('wp-plugin-boilerplate/js', $this->plugin_url . 'dist/main.js', ['jquery'], $this->version, true);
-        wp_register_style('wp-plugin-boilerplate/css', $this->plugin_url . 'dist/main.css', [], $this->version);
+        $this->registerScript("{$this->plugin_name}/js", 'dist/main.js', ['jquery'], true);
+        $this->registerStyle("{$this->plugin_name}/css", 'dist/main.css');
     }
 
     public function enqueue_assets()
     {
-        wp_enqueue_script('wp-plugin-boilerplate/js');
-        wp_enqueue_style('wp-plugin-boilerplate/css');
+        $this->enqueueScript("{$this->plugin_name}/js");
+        $this->enqueueStyle("{$this->plugin_name}/css");
+    }
+
+    public function load_textdomain()
+    {
+        load_plugin_textdomain($this->plugin_name, false, $this->plugin_path . '/languages');
     }
 
     public static function activate()
@@ -88,8 +93,4 @@ class Plugin
     }
 }
 
-if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
-    require_once $composer;
-}
-
-Plugin::get_instance();
+Plugin::getInstance();
