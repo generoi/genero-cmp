@@ -43,6 +43,21 @@ Build assets
     # Watch for changes and re-compile while developing the plugin
     npm run watch
 
+Bump versions
+
+    # Bump patch release
+    robo version:bump
+
+    # Bump minor release
+    robo version:bump --stage=minor
+
+    # Bump major release
+    robo version:bump --stage=major
+
+Setup new plugin
+
+    robo rename
+
 ### Translations
 
 Rebuild POT files (after this, copy to each language as `languages/wp-plugin-boilerplate-<langcode>.po` and translate it)
