@@ -35,39 +35,12 @@ Run the tests
 Build assets
 
     # Minified assets which are to be committed to git
-    npm run production
-
-    # Development assets while developing the plugin
-    npm run dev
+    npm run build:production
 
     # Watch for changes and re-compile while developing the plugin
-    npm run watch
+    npm run start
 
-Bump versions
+## Translations
 
-    # Bump patch release
-    robo version:bump
-
-    # Bump minor release
-    robo version:bump --stage=minor
-
-    # Bump major release
-    robo version:bump --stage=major
-
-Setup new plugin
-
-    robo rename
-
-### Translations
-
-Rebuild POT files (after this, copy to each language as `languages/wp-plugin-boilerplate-<langcode>.po` and translate it)
-
-    npm run lang:pot
-
-Compile MO files (requires msgfmt which is available with `brew install gettext && brew link gettext --force`)
-
-    npm run lang:mo
-
-Or run all of these with:
-
-    npm run lang
+    wp i18n make-pot . languages/wp-plugin-boilerplate.pot
+    wp i18n make-mo languages/

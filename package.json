@@ -1,60 +1,40 @@
 {
-  "name": "wp-plugin-boilerplate",
-  "version": "0.1.0",
-  "description": "A boilerplate WordPress plugin",
-  "main": "assets/scripts/plugin.js",
-  "scripts": {
-    "dev": "NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "hot": "NODE_ENV=development webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "production": "NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "lint": "npm run -s lint:scripts && npm run -s lint:styles",
-    "lint:scripts": "eslint *.js assets/scripts",
-    "lint:styles": "stylelint assets/styles/**/*.{css,scss}",
-    "test": "npm run -s lint && composer test",
-    "precommit": "npm run test",
-    "lang": "npm run lang:pot && npm run lang:mo",
-    "lang:pot": "wp-pot --src '*.php' --src 'src/**/*.php'--src 'languages/**/*.php' --team 'Genero <developers@genero.fi>' --package 'wp-plugin-boilerplate' >| languages/wp-plugin-boilerplate.pot",
-    "lang:mo": "for file in `find . -name \"*.po\"` ; do msgfmt -o ${file/.po/.mo} $file; done"
-  },
   "browserslist": [
-    "last 2 versions",
-    "ie >= 11",
-    "Android >= 4.4",
-    "ios >= 8"
+    "extends @wordpress/browserslist-config",
+    "not ie 11"
   ],
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "plugin:genero/recommended",
-      "plugin:genero/wordpress"
-    ]
-  },
-  "stylelint": {
-    "extends": "stylelint-config-genero"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/generoi/wp-plugin-boilerplate.git"
-  },
-  "author": "Oskar Schöldström",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/generoi/wp-plugin-boilerplate/issues"
-  },
-  "homepage": "https://github.com/generoi/wp-plugin-boilerplate#readme",
-  "engines": {
-    "node": ">= 6.9.4"
+  "private": true,
+  "scripts": {
+    "build": "cross-env NODE_ENV=development run-s mix",
+    "build:production": "cross-env NODE_ENV=production run-s mix",
+    "start": "cross-env NODE_ENV=development run-s \"mix -- --watch\"",
+    "hot": "cross-env NODE_ENV=development run-s build mix:hot",
+    "mix": "webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "mix:hot": "webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "lint": "npm run -s lint:scripts && npm run -s lint:styles",
+    "lint:scripts": "eslint *.js src",
+    "lint:styles": "stylelint src/**/*.{css,scss}",
+    "test": "npm run -s lint && composer test"
   },
   "devDependencies": {
-    "eslint": "^4.19.0",
-    "eslint-plugin-genero": "git+https://github.com/generoi/eslint-plugin-genero.git",
-    "eslint-plugin-import": "^2.13.0",
-    "husky": "^0.14.3",
-    "laravel-mix": "^2.1.11",
-    "stylelint": "^9.3.0",
-    "stylelint-config-genero": "git+https://github.com/generoi/stylelint-config-genero.git",
-    "wp-pot-cli": "^1.2.1"
-  },
-  "dependencies": {}
+    "@tinypixelco/laravel-mix-wp-blocks": "^1.0.0",
+    "@wordpress/babel-preset-default": "^4.13.0",
+    "@wordpress/base-styles": "^2.0.0",
+    "@wordpress/browserslist-config": "^2.6.0",
+    "@wordpress/dependency-extraction-webpack-plugin": "^2.5.0",
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-react": "^7.20.5",
+    "glob": "^7.2.0",
+    "laravel-mix": "^5.0.4",
+    "npm-run-all": "^4.1",
+    "resolve-url-loader": "^3.1.0",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "stylelint": "^13.6.1",
+    "stylelint-config-standard": "^20.0.0",
+    "vue-template-compiler": "^2.6.12"
+  }
 }
