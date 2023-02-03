@@ -1,9 +1,9 @@
 {
-  "name": "generoi/wp-plugin-boilerplate",
+  "name": "generoi/genero-cmp",
   "type": "wordpress-plugin",
   "license": "MIT",
-  "description": "A boilerplate WordPress plugin",
-  "homepage": "https://github.com/generoi/wp-plugin-boilerplate",
+  "description": "CMP Plugin",
+  "homepage": "https://github.com/generoi/genero-cmp",
   "authors": [
     {
       "name": "Oskar Schöldström",
@@ -14,7 +14,7 @@
     "wordpress"
   ],
   "support": {
-    "issues": "https://github.com/generoi/wp-plugin-boilerplate/issues"
+    "issues": "https://github.com/generoi/genero-cmp/issues"
   },
   "repositories": [
     {
@@ -27,19 +27,16 @@
     }
   ],
   "require": {
-    "php": ">=5.6.0",
-    "composer/installers": "~1.0",
-    "yahnis-elsts/plugin-update-checker": "^4.4",
-    "generoi/wp-genero-common": "^0.1.2"
+    "php": ">=7.0.0"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^2.5.1",
-    "consolidation/robo": "~1.3.0",
-    "generoi/robo-genero": "^0.1.0"
+    "squizlabs/php_codesniffer": "^3.7",
+    "consolidation/robo": "^3.0",
+    "generoi/robo-genero": "dev-master"
   },
   "autoload": {
     "psr-4": {
-      "GeneroWP\\PluginBoilerplate\\": "src/"
+      "GeneroWP\\GeneroCmp\\": "src/"
     }
   },
   "scripts": {

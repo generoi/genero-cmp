@@ -1,0 +1,28 @@
+@use "~@wordpress/base-styles/breakpoints" as wp;
+
+$mq-breakpoints: (
+  mobile: 320px,
+  small: wp.$break-small,
+  medium: 670px,
+  large: wp.$break-large,
+  xlarge: wp.$break-xlarge,
+  desktopmenu: 1024px,
+  wide: wp.$break-wide,
+  huge: 1410px,
+);
+
+@forward "~sass-mq" with (
+  $breakpoints: $mq-breakpoints
+);
+
+@mixin responsive($breakpoints) {
+  @each $breakpoint, $value in $breakpoints {
+    @if $breakpoint == "default" {
+      @content($value);
+    } @else {
+      @include mq($from: $breakpoint) {
+        @content($value);
+      }
+    }
+  }
+}
