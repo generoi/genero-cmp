@@ -1,10 +1,10 @@
 <?php
 
-namespace GeneroWP\PluginBoilerplate;
+namespace GeneroWP\GeneroCmp;
 
 class Plugin
 {
-    public $name = 'wp-plugin-boilerplate';
+    public $name = 'genero-cmp';
     public $file;
     public $path;
     public $url;
@@ -21,13 +21,17 @@ class Plugin
 
     public function __construct()
     {
-        $this->file = realpath(__DIR__ . '/../wp-plugin-boilerplate.php');
+        $this->file = realpath(__DIR__ . '/../genero-cmp.php');
         $this->path = untrailingslashit(plugin_dir_path($this->file));
         $this->url = untrailingslashit(plugin_dir_url($this->file));
 
         add_action('init', [$this, 'loadTextdomain']);
+        add_filter('admin_init', [$this, 'registerSettings']);
         add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
+        add_filter('render_block', [$this, 'overrideYoutubeEmbeds'], 10, 2);
+
+        include_once $this->path . '/assets/scripts/cookie-consent/index.php';
     }
 
     public function registerAssets(): void
@@ -62,4 +66,35 @@ class Plugin
         );
     }
 
+    public function registerSettings()
+    {
+        register_setting('general', 'cmp_gtm_id', 'esc_attr');
+        add_settings_field('cmp_gtm_id', '<label for="cmp_gtm_id">' . __('GTM ID', 'cmp_gtm_id') . '</label>', __NAMESPACE__ . '\\fields_html', 'general');
+
+        function fields_html()
+        {
+            ?>
+            <input type="text" id="cmp_gtm_id" name="cmp_gtm_id" class="regular-text code" value="<?php echo get_option('cmp_gtm_id', ''); ?>" />
+            <p class="description" id="tagline-description">Google Tag Manager ID</p>
+            <?php
+        }
+    }
+
+    /**
+     * Override youtube embed blocks with no-cookie parameter
+     */
+    public function overrideYoutubeEmbeds($block_content, $block)
+    {
+        // ignore this code in backend
+        if (is_admin()) {
+            return $block_content;
+        }
+
+        // override youtube embeds url
+        if ('core-embed/youtube' === $block['blockName']) {
+            $block_content = str_replace('youtube.com', 'youtube-nocookie.com', $block_content);
+        }
+
+        return $block_content;
+    }
 }

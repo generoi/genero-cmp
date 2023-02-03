@@ -8,10 +8,10 @@ class RoboFile extends \Robo\Tasks
 {
     use \Generoi\Robo\Task\Placeholder\loadTasks;
 
-    public $machineName = 'wp-plugin-boilerplate';
-    public $name = 'WP Plugin Boilerplate';
-    public $namespace = 'PluginBoilerplate';
-    public $description = 'A boilerplate WordPress plugin';
+    public $machineName = 'genero-cmp';
+    public $name = 'genero-cmp';
+    public $namespace = 'GeneroCmp';
+    public $description = 'CMP Plugin';
 
     public function rename($machineName = null, $options = [
         'force' => false,

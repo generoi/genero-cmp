@@ -1,6 +1,6 @@
-# wp-plugin-boilerplate
+# genero-cmp
 
-> A boilerplate WordPress plugin
+> CMP Plugin
 
 ## Requirements
 
@@ -42,5 +42,5 @@ Build assets
 
 ## Translations
 
-    wp i18n make-pot . languages/wp-plugin-boilerplate.pot
+    wp i18n make-pot . languages/genero-cmp.pot
     wp i18n make-mo languages/
