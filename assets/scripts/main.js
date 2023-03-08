@@ -12,4 +12,9 @@ import './toggle-button';
 import cookieConsent from './cookie-consent';
 
 window.PluginComponent = new PluginComponent();
-cookieConsent(document.querySelector('.cookie-consent'));
+
+// Initialize cookie consent.
+let cookieConsentContainer = document.querySelector('.cookie-consent');
+if(cookieConsentContainer) {
+  cookieConsent(document.querySelector('.cookie-consent'));
+}
