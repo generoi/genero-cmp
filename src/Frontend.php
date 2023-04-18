@@ -8,7 +8,7 @@ class Frontend
 
     public function __construct($name)
     {
-        $this->settings = get_option($name);
+        $this->settings = apply_filters('gds_cmp_settings', get_option($name));
 
         add_action('wp_head', [$this, 'wpHead']);
         add_action('wp_footer', [$this, 'wpFooter']);
