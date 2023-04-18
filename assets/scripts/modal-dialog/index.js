@@ -197,4 +197,4 @@ export class ModelDialog extends HTMLElement {
   }
 }
 
-customElements.define('modal-dialog', ModelDialog);
+customElements.define('gds-cmp-modal-dialog', ModelDialog);

@@ -9,12 +9,15 @@ import './modal-dialog';
 import './accordion';
 import './accordion-item';
 import './toggle-button';
-import cookieConsent from './cookie-consent';
+import cookieConsent, {googleConsentMode} from './cookie-consent';
 
 window.PluginComponent = new PluginComponent();
 
-// Initialize cookie consent.
-let cookieConsentContainer = document.querySelector('.cookie-consent');
-if(cookieConsentContainer) {
-  cookieConsent(document.querySelector('.cookie-consent'));
-}
+googleConsentMode();
+
+document.addEventListener('DOMContentLoaded', () => {
+  let cookieConsentContainer = document.querySelector('.cookie-consent');
+  if(cookieConsentContainer) {
+    cookieConsent(document.querySelector('.cookie-consent'));
+  }
+});

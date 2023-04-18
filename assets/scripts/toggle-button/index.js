@@ -121,4 +121,4 @@ export class ToggleButton extends HTMLElement {
   }
 }
 
-customElements.define('toggle-button', ToggleButton);
+customElements.define('gds-cmp-toggle-button', ToggleButton);

@@ -26,14 +26,19 @@ class Plugin
         $this->url = untrailingslashit(plugin_dir_url($this->file));
 
         add_action('init', [$this, 'loadTextdomain']);
-        add_filter('admin_init', [$this, 'registerSettings']);
+
         add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         add_filter('render_block', [$this, 'overrideYoutubeEmbeds'], 10, 2);
 
-        include_once $this->path . '/assets/scripts/cookie-consent/index.php';
+        new Admin($this->name);
+        new Frontend($this->name);
+        new Plugins($this->name);
     }
 
+    /**
+     * Assets
+     */
     public function registerAssets(): void
     {
         wp_register_script(
@@ -57,6 +62,9 @@ class Plugin
         wp_enqueue_script("{$this->name}/js");
     }
 
+    /**
+     * Text domain
+     */
     public function loadTextdomain(): void
     {
         load_plugin_textdomain(
@@ -64,20 +72,6 @@ class Plugin
             false,
             dirname(plugin_basename($this->file)) . '/languages'
         );
-    }
-
-    public function registerSettings()
-    {
-        register_setting('general', 'cmp_gtm_id', 'esc_attr');
-        add_settings_field('cmp_gtm_id', '<label for="cmp_gtm_id">' . __('GTM ID', 'cmp_gtm_id') . '</label>', __NAMESPACE__ . '\\fields_html', 'general');
-
-        function fields_html()
-        {
-            ?>
-            <input type="text" id="cmp_gtm_id" name="cmp_gtm_id" class="regular-text code" value="<?php echo get_option('cmp_gtm_id', ''); ?>" />
-            <p class="description" id="tagline-description">Google Tag Manager ID</p>
-            <?php
-        }
     }
 
     /**

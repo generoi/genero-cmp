@@ -136,4 +136,4 @@ export class GdsAccordionItem extends HTMLElement {
   }
 }
 
-customElements.define('gds-accordion-item', GdsAccordionItem);
+customElements.define('gds-cmp-accordion-item', GdsAccordionItem);

@@ -1,7 +1,3 @@
-@use "../../styles/common/breakpoints.scss" as *;
-@use "../../styles/typography.scss" as type;
-@use "../../styles/button.scss" as button;
-
 .cookie-consent {
   --block-gutter: 24px;
 
@@ -13,13 +9,17 @@
     }
   }
 
-  gds-accordion {
+  gds-cmp-accordion {
     margin-block-start: 0;
     display: flex;
     flex-direction: column;
   }
 
-  gds-accordion-item {
+  gds-cmp-accordion-item {
+    + gds-cmp-accordion-item {
+      margin-top: 12px;
+    }
+
     p {
       margin: 0;
     }
@@ -43,17 +43,7 @@
     }
 
     &::part(content) {
-      margin-bottom: 16px;
-
-      @include type.body-s;
-    }
-  }
-
-  @include mq($until: medium) {
-    & &__buttons {
-      .wp-block-button__link.wp-block-button__link {
-        @include button.size-s;
-      }
+      margin: 12px 0;
     }
   }
 

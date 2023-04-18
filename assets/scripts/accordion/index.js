@@ -49,4 +49,4 @@ export class GdsAccordion extends HTMLElement {
   }
 }
 
-customElements.define('gds-accordion', GdsAccordion);
+customElements.define('gds-cmp-accordion', GdsAccordion);

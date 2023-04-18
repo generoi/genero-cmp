@@ -23,13 +23,42 @@ function buildConsentString(values, revisedVersion = 1) {
 }
 
 function runEvent(modal) {
-  let event = new CustomEvent('accept', {
+  const settings = JSON.parse(modal.attributes['data-configs'].value);
+  const cookieConsents = parseConsentString(
+    getCookie(COOKIE_NAME)
+  );
+
+  let consents = {};
+
+  settings.consents.forEach((item, index) => {
+    consents[item.id] = cookieConsents[index];
+  });
+
+  let event = new CustomEvent('genero-cmp-accept', {
     detail: {
       message: 'Cookies have been accepted',
-      settings: JSON.parse(modal.attributes['data-configs'].value)
+      settings: settings,
+      consents: consents,
     }
   });
-  modal.dispatchEvent(event);
+  window.dispatchEvent(event);
+}
+
+export function googleConsentMode(type = 'default') {
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+
+  const consents = parseConsentString(
+    getCookie(COOKIE_NAME)
+  );
+
+  gtag('consent', type, {
+    'analytics_storage': consents.length ? (consents[1] === '1' ? 'granted' : 'denied') : 'denied',
+    'ad_storage': consents.length ? (consents[2] === '1' ? 'granted' : 'denied') : 'denied',
+  });
 }
 
 export default function init(modal) {
@@ -84,6 +113,7 @@ export default function init(modal) {
     setCookie(COOKIE_NAME, consentString);
     setCookie(COOKIE_NAME + '-hash', hash);
     runEvent(modal);
+    googleConsentMode('update');
     modal.hide();
   });
 
@@ -96,6 +126,7 @@ export default function init(modal) {
     setCookie(COOKIE_NAME, consentString);
     setCookie(COOKIE_NAME + '-hash', hash);
     runEvent(modal);
+    googleConsentMode('update');
     modal.hide();
   });
 }

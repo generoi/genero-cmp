@@ -1,0 +1,102 @@
+# Copyright (C) 2023 Genero
+# This file is distributed under the MIT License.
+msgid ""
+msgstr ""
+"Project-Id-Version: Genero CMP 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/genero-cmp\n"
+"POT-Creation-Date: 2023-04-18T10:27:26+00:00\n"
+"PO-Revision-Date: 2023-04-18 12:55+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Domain: genero-cmp\n"
+
+#. Plugin Name of the plugin
+msgid "Genero CMP"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "http://genero.fi"
+msgstr ""
+
+#. Description of the plugin
+msgid "CMP Plugin"
+msgstr ""
+
+#. Author of the plugin
+msgid "Genero"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://genero.fi/"
+msgstr ""
+
+#: src/Frontend.php:364
+msgid "Necessary"
+msgstr "Nödvändig"
+
+#: src/Frontend.php:365
+msgid ""
+"These cookies are technically required for our core website to work "
+"properly, e.g. security functions or your cookie consent preferences."
+msgstr "Dessa cookies hjälper oss att mäta och optimera vår marknadsföring."
+
+#: src/Frontend.php:371
+msgid "Statistics"
+msgstr "Statistik"
+
+#: src/Frontend.php:372
+msgid ""
+"In order to improve our website going forward, we anonymously collect data "
+"for statistical and analytical purposes. With these cookies we can, for "
+"instance, monitor the number or duration of visits of specific pages of our "
+"website helping us in optimizing user experience."
+msgstr ""
+"För att förbättra vår hemsida samlar vi anonym information som är till för "
+"statistikföring och analyser. Med hjälp av dessa cookies kan vi t.ex föja "
+"med hur många besökare sidan har eller hur länge de stannat på sidan. Detta "
+"hjälper oss att skapa en bättre användarupplevelse."
+
+#: src/Frontend.php:377
+msgid "Marketing"
+msgstr "Marknadsföring"
+
+#: src/Frontend.php:378
+msgid ""
+"These cookies help us in measuring and optimizing our marketing efforts."
+msgstr "Dessa cookies är nödvändiga för att sidan skall fungera korrekt."
+
+#: src/Frontend.php:397
+msgid "Cookie Preferences"
+msgstr "Cookie-inställningar"
+
+#: src/Frontend.php:399
+msgid ""
+"We use cookies to provide a better user experience and personalised service. "
+"By consenting to the use of cookies, we can develop an even better service "
+"and will be able to provide content that is interesting to you. You are in "
+"control of your cookie preferences, and you may change them at any time. "
+"Read more about our cookies."
+msgstr ""
+"Vi använder cookies för att ge dig en bättre användarupplevelse och "
+"personlig service. Genom att samtycka till användningen av cookies kan vi "
+"utveckla en ännu bättre tjänst och tillhandahålla innehåll som är intressant "
+"för dig. Du har kontroll över dina cookiepreferenser och kan ändra dem när "
+"som helst. Läs mer om våra cookies."
+
+#: src/Frontend.php:433
+msgid "Accept selected cookies"
+msgstr "Acceptera utvalda cookies"
+
+#: src/Frontend.php:441
+msgid "Edit cookie settings"
+msgstr "Redigera cookies"
+
+#: src/Frontend.php:448
+msgid "Accept all cookies"
+msgstr "Acceptera alla cookies"
