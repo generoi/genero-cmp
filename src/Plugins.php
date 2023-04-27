@@ -18,6 +18,11 @@ class Plugins
                     ?><script><?php do_action('woo_feed_after_pixel_init'); ?></script><?php
                 }, 20);
             }
+
+            // Event Tracking for Gravity Forms
+            if (!empty($this->settings['plugin_gravity_forms_google_analytics_event_tracking_container_off'])) {
+                add_filter('gform_gtm_script_enable', '__return_false');
+            }
         });
     }
 

@@ -369,6 +369,18 @@ class Admin
                 'label' => __('Check to remove Facebook Pixel code added by CTX Feed plugin.', $this->text_domain),
             ]
         );
+
+        add_settings_field(
+            $this->settings_title . '_plugin_gravity_forms_google_analytics_event_tracking_container_off',
+            __('Event Tracking for Gravity Forms - GTM Container OFF', $this->text_domain),
+            [$this, 'renderCheckbox'],
+            $this->settings_title,
+            $this->settings_title . '_plugins',
+            [
+                'key' => 'plugin_gravity_forms_google_analytics_event_tracking_container_off',
+                'label' => __('Check to remove GTM container code added by Event Tracking for Gravity Forms plugin.', $this->text_domain),
+            ]
+        );
     }
 
     public function renderText($args)
@@ -449,6 +461,7 @@ class Admin
             'event_new_user_reg' => 1,
             'event_user_logged_in' => 1,
             'plugin_ctx_feed_facebook_pixel_off' => 0,
+            'plugin_gravity_forms_google_analytics_event_tracking_container_off' => 0,
         ];
     }
 
