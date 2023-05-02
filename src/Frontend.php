@@ -5,13 +5,16 @@ namespace GeneroWP\GeneroCmp;
 class Frontend
 {
     public $settings;
+    public $name;
 
     public function __construct($name)
     {
+        $this->name = $name;
         $this->settings = apply_filters('gds_cmp_settings', get_option($name));
 
         add_action('wp_head', [$this, 'wpHead']);
         add_action('wp_footer', [$this, 'wpFooter']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         add_action('init', [$this, 'removeCookies']);
         add_action('wp_body_open', [$this, 'consentManager']);
 
@@ -99,6 +102,15 @@ class Frontend
                 unset($_COOKIE['event_new_user_reg']);
             }
         }
+    }
+
+    public function enqueueAssets(): void
+    {
+        if (empty($this->settings['gtm_id'])) {
+            return;
+        }
+        wp_enqueue_style("{$this->name}/css");
+        wp_enqueue_script("{$this->name}/js");
     }
 
     public function getDataLayerData()

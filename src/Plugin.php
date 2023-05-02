@@ -26,9 +26,8 @@ class Plugin
         $this->url = untrailingslashit(plugin_dir_url($this->file));
 
         add_action('init', [$this, 'loadTextdomain']);
-
         add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
+
         add_filter('render_block', [$this, 'overrideYoutubeEmbeds'], 10, 2);
 
         new Admin($this->name);
@@ -59,11 +58,6 @@ class Plugin
         wp_style_add_data("{$this->name}/css", 'path', "{$this->path}/dist/main.css");
     }
 
-    public function enqueueAssets(): void
-    {
-        wp_enqueue_style("{$this->name}/css");
-        wp_enqueue_script("{$this->name}/js");
-    }
 
     /**
      * Text domain
