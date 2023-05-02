@@ -21,7 +21,7 @@ function ready(fn) {
 
 ready(() => {
   let cookieConsentContainer = document.querySelector('.cookie-consent');
-  if(cookieConsentContainer) {
-    cookieConsent(document.querySelector('.cookie-consent'));
+  if (cookieConsentContainer) {
+    cookieConsent(cookieConsentContainer);
   }
 });
