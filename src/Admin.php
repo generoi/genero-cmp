@@ -83,6 +83,19 @@ class Admin
             ]
         );
 
+        add_settings_field(
+            $this->settings_title . '_embeds_require_consent',
+            __('Block embeds', $this->text_domain),
+            [$this, 'renderCheckbox'],
+            $this->settings_title,
+            $this->settings_title . '_general',
+            [
+                'key' => 'embeds_require_consent',
+                'label' => __('Block embeds until consent has been given', $this->text_domain),
+                'description' => __('YouTube videos require "marketing" consent while other iframes require "functional" (if enabled).', $this->text_domain),
+            ]
+        );
+
         add_settings_section(
             $this->settings_title . '_data_posts',
             __('Posts Data', $this->text_domain),
@@ -440,6 +453,7 @@ class Admin
         return [
             'gtm_id' => '',
             'container_off' => 0,
+            'embeds_require_consent' => 0,
             'incl_post_type' => 1,
             'incl_categories' => 1,
             'incl_tags' => 1,

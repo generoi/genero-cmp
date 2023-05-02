@@ -19,6 +19,10 @@ class Frontend
         add_action('wp_body_open', [$this, 'consentManager']);
         add_filter('wp_resource_hints', [$this, 'addPreconnectHint'], 10, 2);
 
+        if (!empty($this->settings['embeds_require_consent'])) {
+            add_filter('the_content', [$this, 'blockEmbeds'], 1000);
+        }
+
         if (!empty($this->settings['event_user_logged_in'])) {
             add_action('wp_login', [$this, 'setLoginCookie']);
         }
@@ -381,6 +385,42 @@ class Frontend
         if (array_key_exists('genero_cmp_registered', $_COOKIE)) {
             setcookie('genero_cmp_registered', '', -10000, '/', '', ( false !== strstr(get_option('home'), 'https:') ) && is_ssl(), true);
         }
+    }
+
+    public function blockEmbeds(string $content): string
+    {
+        $description = __('Viewing this embed loads content from a third party and thus requires <em>%s</em> consent.', 'genero-cmp');
+        $button = __('Modify preferences', 'genero-cmp');
+
+        $content = preg_replace_callback(
+            '~<(iframe|youtube-embed)(.*?)>(.*?)</(iframe|youtube-embed)>~is',
+            function (array $matches) use ($description, $button) {
+                $consent = str_contains($matches[0], 'youtube') ? 'marketing' : 'functional';
+                $consentLabel = match ($consent) {
+                    'marketing' => __('Marketing', 'genero-cmp'),
+                    'functional' => __('Functional', 'genero-cmp'),
+                    'statistics' => __('Statistics', 'genero-cmp'),
+                };
+
+                // @TODO not yet implemented.
+                if (empty($this->settings['functional_consent']) && $consent === 'functional') {
+                    return $matches[0];
+                }
+
+                return sprintf(
+                    '<gds-cmp-embed as="%s" consent="%s" description="%s" button="%s"%s>%s</gds-cmp-embed>',
+                    $matches[1],
+                    $consent,
+                    sprintf($description, $consentLabel),
+                    $button,
+                    $matches[2],
+                    $matches[3],
+                );
+            },
+            $content,
+        );
+
+        return $content;
     }
 
     public function consentManager()

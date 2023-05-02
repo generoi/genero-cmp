@@ -8,6 +8,7 @@ import './modal-dialog';
 import './accordion';
 import './accordion-item';
 import './toggle-button';
+import './embed';
 import cookieConsent from './cookie-consent';
 import {EVENT_CONSENT, getConsentData, hasConsent } from './api';
 
