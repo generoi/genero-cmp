@@ -107,7 +107,18 @@ export class ModelDialog extends HTMLElement {
     );
   }
 
+  isElHidden() {
+    const style = window.getComputedStyle(this);
+    return style.display === 'none';
+  }
+
   lockScrolling() {
+    // Chrome extensions such as ad blockers or cookie banner blockers might
+    // hide the consent dialog, we need to detect this so that we dont lock
+    // the scroll unless the modal is actually visible
+    if (this.isElHidden()) {
+      return;
+    }
     document.body.style.overflowY = 'hidden';
   }
 
