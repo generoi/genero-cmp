@@ -47,6 +47,8 @@ class Plugin
             [],
             filemtime($this->path . '/dist/main.js')
         );
+        // Support async loading if a plugin implements it.
+        wp_script_add_data("{$this->name}/js", 'async', true);
 
         wp_register_style(
             "{$this->name}/css",
@@ -54,6 +56,7 @@ class Plugin
             [],
             filemtime($this->path . '/dist/main.css')
         );
+        wp_style_add_data("{$this->name}/css", 'path', "{$this->path}/dist/main.css");
     }
 
     public function enqueueAssets(): void
