@@ -388,7 +388,7 @@ class Frontend
             <gds-cmp-modal-dialog
                 class="cookie-consent"
                 aria-labelledby="cc-heading"
-                aria-descibedby="cc-description"
+                aria-describedby="cc-description"
                 persistent
                 scroll-lock
                 data-cookie-consent-hash="' . $hash . '"
