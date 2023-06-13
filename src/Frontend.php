@@ -29,6 +29,9 @@ class Frontend
         if (empty($this->settings['gtm_id'])) {
             return;
         }
+        if (isset($_GET['no_gtm'])) {
+            return;
+        }
 
         $datalayer_content = apply_filters('gds_cmp_datalayer', $this->getDataLayerData());
         ?>
