@@ -4,18 +4,22 @@
  * libraries.
  */
 
-import PluginComponent from './component';
 import './modal-dialog';
 import './accordion';
 import './accordion-item';
 import './toggle-button';
 import cookieConsent, {googleConsentMode} from './cookie-consent';
 
-window.PluginComponent = new PluginComponent();
-
 googleConsentMode();
 
-document.addEventListener('DOMContentLoaded', () => {
+function ready(fn) {
+  if (document.readyState !== 'loading') {
+    return setTimeout(fn, 0)
+  }
+  document.addEventListener('DOMContentLoaded', fn);
+}
+
+ready(() => {
   let cookieConsentContainer = document.querySelector('.cookie-consent');
   if(cookieConsentContainer) {
     cookieConsent(document.querySelector('.cookie-consent'));
