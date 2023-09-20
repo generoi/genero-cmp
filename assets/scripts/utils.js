@@ -14,3 +14,9 @@ export function getCookie(cookie) {
   }
   return null;
 }
+
+export function deleteWrongCookie(name) {
+  const domain = location.hostname.split('.').splice(-2).join('.');
+
+  document.cookie = `${name}=; path=/; domain=${domain}; expires=` + new Date(0).toUTCString();
+}
