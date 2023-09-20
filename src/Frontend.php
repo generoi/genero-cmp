@@ -385,7 +385,13 @@ class Frontend
 
         $settings['consents'] = apply_filters('gds_cmp_consents', $settings['consents']);
 
-        $hash = md5(json_encode($settings['consents']));
+        $hash = $settings['consents'];
+        foreach ($hash as &$item) {
+            unset($item['label']);
+            unset($item['description']);
+        }
+        $hash = md5(json_encode($hash));
+
         $configs = esc_html(wp_json_encode($settings));
         $body = '
             <gds-cmp-modal-dialog

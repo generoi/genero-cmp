@@ -1,10 +1,8 @@
 export function setCookie(name, value) {
-  const domain = location.hostname.split('.').splice(-2).join('.')
-
   const expires = new Date();
   expires.setMonth(expires.getMonth() + 13);
 
-  document.cookie = `${name}=${value}; domain=${domain}; path=/; SameSite=None; Secure; expires=${expires.toUTCString()}`;
+  document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()}`;
 }
 
 export function getCookie(cookie) {
