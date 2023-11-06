@@ -27,6 +27,13 @@ ready(() => {
       evaluateTags,
     };
   }
+
+  for (const link of document.querySelectorAll('.js-show-cookieconsent')) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      cookieConsentContainer.show();
+    });
+  }
 });
 
 function evaluateTags(context = document) {
