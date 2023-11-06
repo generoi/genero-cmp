@@ -27,6 +27,7 @@ class Plugin
 
         add_action('init', [$this, 'loadTextdomain']);
         add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
+        add_action('enqueue_block_editor_assets', [$this, 'blockEditorAssets'], 0);
 
         add_filter('render_block', [$this, 'overrideYoutubeEmbeds'], 10, 2);
 
@@ -58,6 +59,17 @@ class Plugin
         wp_style_add_data("{$this->name}/css", 'path', "{$this->path}/dist/main.css");
     }
 
+    public function blockEditorAssets(): void
+    {
+        if ($manifest = include $this->path . '/dist/editor.asset.php') {
+            wp_enqueue_script(
+                "{$this->name}/editor.js",
+                "{$this->url}/dist/editor.js",
+                $manifest['dependencies'],
+                filemtime($this->path . '/dist/editor.js')
+            );
+        }
+    }
 
     /**
      * Text domain

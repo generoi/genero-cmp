@@ -1,3 +1,25 @@
 gds-cmp-modal-dialog {
   display: none;
 }
+
+$consents: (
+  'statistics',
+  'marketing'
+);
+
+// .marketing-consent:show show only if there's marketing consent
+// .marketing-consent:hide show only if there's NO marketing consent
+@each $consent in $consents {
+  body.has-genero-cmp-consent--#{$consent} [data-consent-optout="#{$consent}"] {
+    display: none !important;
+  }
+
+  body:not(.has-genero-cmp-consent--#{$consent}) [data-consent-optin*="#{$consent}"] {
+    display: none !important;
+  }
+}
+
+body.has-genero-cmp-consent--statistics.has-genero-cmp-consent--marketing [data-consent-optout="statistics marketing"],
+body.has-genero-cmp-consent--statistics.has-genero-cmp-consent--marketing [data-consent-optout="marketing statistics"] {
+  display: none !important;
+}

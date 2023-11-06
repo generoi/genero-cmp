@@ -74,3 +74,15 @@ function evaluateTags(context = document) {
 }
 
 window.addEventListener(EVENT_CONSENT, () => evaluateTags());
+
+window.addEventListener(EVENT_CONSENT, () => {
+  const consents = getConsentData();
+  const consentData = {
+    'statistics': consents.length ? consents[1] === '1' : false,
+    'marketing': consents.length ? consents[2] === '1' : false,
+  }
+
+  for (const [consent, value] of Object.entries(consentData)) {
+    document.body.classList.toggle(`has-genero-cmp-consent--${consent}`, value);
+  }
+});
