@@ -4,7 +4,14 @@ import './index.scss';
 /**
  * Cookie format: (version,consent1,consent2,consent3,consent4)  Example(String): "1,1,1,0,1"
  */
-const COOKIE_NAME = 'gds-consent';
+export const COOKIE_NAME = 'gds-consent';
+export const EVENT_CONSENT = 'genero-cmp-accept';
+
+export function getConsentData() {
+  return parseConsentString(
+    getCookie(COOKIE_NAME)
+  );
+}
 
 function parseVersion(consentString) {
   const values = consentString?.split(',') || [];
@@ -24,9 +31,7 @@ function buildConsentString(values, revisedVersion = 1) {
 
 function runEvent(modal) {
   const settings = JSON.parse(modal.attributes['data-configs'].value);
-  const cookieConsents = parseConsentString(
-    getCookie(COOKIE_NAME)
-  );
+  const cookieConsents = getConsentData();
 
   let consents = {};
 
@@ -34,7 +39,7 @@ function runEvent(modal) {
     consents[item.id] = cookieConsents[index];
   });
 
-  let event = new CustomEvent('genero-cmp-accept', {
+  let event = new CustomEvent(EVENT_CONSENT, {
     detail: {
       message: 'Cookies have been accepted',
       settings: settings,
@@ -51,9 +56,7 @@ export function googleConsentMode(type = 'default') {
     dataLayer.push(arguments);
   }
 
-  const consents = parseConsentString(
-    getCookie(COOKIE_NAME)
-  );
+  const consents = getConsentData();
 
   gtag('consent', type, {
     'analytics_storage': consents.length ? (consents[1] === '1' ? 'granted' : 'denied') : 'denied',
@@ -72,9 +75,7 @@ export default function init(modal) {
     input.addEventListener('click', (e) => e.stopPropagation());
   }
 
-  const consents = parseConsentString(
-    getCookie(COOKIE_NAME)
-  );
+  const consents = getConsentData();
   const consentHash = getCookie(COOKIE_NAME + '-hash');
 
   let version = parseVersion(
