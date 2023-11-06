@@ -2,6 +2,8 @@
 
 namespace GeneroWP\GeneroCmp;
 
+use Gravity_Forms\Gravity_Forms_Google_Analytics\GF_Google_Analytics;
+
 class Plugins
 {
     public $settings;
@@ -19,9 +21,17 @@ class Plugins
                 }, 20);
             }
 
-            // Event Tracking for Gravity Forms
             if (!empty($this->settings['plugin_gravity_forms_google_analytics_event_tracking_container_off'])) {
+                // Event Tracking for Gravity Forms plugin
                 add_filter('gform_gtm_script_enable', '__return_false');
+
+                // Gravityforms Analytics Official plugin
+                if (class_exists(GF_Google_Analytics::class)) {
+                    $plugin = GF_Google_Analytics::get_instance();
+
+                    remove_action('wp_head', [$plugin, 'maybe_install_tag_manager_header']);
+                    remove_action('wp_body_open', [$plugin, 'maybe_install_tag_manager_body']);
+                }
             }
         });
     }
