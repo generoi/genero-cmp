@@ -23,9 +23,10 @@ ready(() => {
   let cookieConsentContainer = document.querySelector('.cookie-consent');
   if (cookieConsentContainer) {
     window.generoCmp = {
-      ...cookieConsent(cookieConsentContainer),
+      getConsentData,
       evaluateTags,
     };
+    cookieConsent(cookieConsentContainer);
   }
 
   for (const link of document.querySelectorAll('.js-show-cookieconsent')) {
