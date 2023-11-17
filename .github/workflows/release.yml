@@ -1,0 +1,51 @@
+name: Create release
+on:
+  release:
+    types:
+      - published
+
+env:
+  NODE_VERSION: 16
+  PHP_VERSION: 8.1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Composer Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: |
+          composer install --optimize-autoloader --no-dev
+
+      - name: Install dependencies
+        run: |
+          composer install --optimize-autoloader --no-dev
+
+      - name: Zip Folder
+        run: zip -r ${{ github.event.repository.name }}.zip .  -x ".git/*" ".github/*" "*.xml" "*.neon" "composer.*" "tests/*" ".*"
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ github.event.repository.name }}.zip
