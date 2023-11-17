@@ -8,9 +8,9 @@ import './modal-dialog';
 import './accordion';
 import './accordion-item';
 import './toggle-button';
-import cookieConsent, {EVENT_CONSENT, getConsentData, googleConsentMode} from './cookie-consent';
+import cookieConsent, {EVENT_CONSENT, getConsentData, initConsentMode } from './cookie-consent';
 
-googleConsentMode();
+initConsentMode();
 
 function ready(fn) {
   if (document.readyState !== 'loading') {

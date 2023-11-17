@@ -2,6 +2,8 @@
 
 namespace GeneroWP\GeneroCmp;
 
+use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
+use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
 use Gravity_Forms\Gravity_Forms_Google_Analytics\GF_Google_Analytics;
 
 class Plugins
@@ -10,7 +12,10 @@ class Plugins
 
     public function __construct($name)
     {
-        $this->settings = get_option($name);
+        $this->settings = get_option($name) ?: [];
+
+        new FacebookForWooCommerce($this->settings);
+        new TiktokForBusiness($this->settings);
 
         add_action('init', function () {
             // CTX Feed

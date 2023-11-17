@@ -49,6 +49,18 @@ function runEvent(modal) {
   window.dispatchEvent(event);
 }
 
+export function initConsentMode() {
+  googleConsentMode('default');
+  metaConsentMode();
+  tiktokConsentMode();
+}
+
+export function updateConsentMode() {
+  googleConsentMode('update');
+  metaConsentMode();
+  tiktokConsentMode();
+}
+
 export function googleConsentMode(type = 'default') {
   window.dataLayer = window.dataLayer || [];
 
@@ -62,6 +74,34 @@ export function googleConsentMode(type = 'default') {
     'analytics_storage': consents.length ? (consents[1] === '1' ? 'granted' : 'denied') : 'denied',
     'ad_storage': consents.length ? (consents[2] === '1' ? 'granted' : 'denied') : 'denied',
   });
+}
+
+export function metaConsentMode() {
+  if (!window.fbq) {
+    return;
+  }
+
+  const consents = getConsentData();
+  const hasConsent = consents.length && consents[1] === '1' && consents[2] === '1';
+  if (hasConsent) {
+    window.fbq('consent', 'grant');
+  } else {
+    window.fbq('consent', 'revoke');
+  }
+}
+
+export function tiktokConsentMode() {
+  if (!window.ttq) {
+    return;
+  }
+
+  const consents = getConsentData();
+  const hasConsent = consents.length && consents[1] === '1' && consents[2] === '1';
+  if (hasConsent) {
+    window.ttq.enableCookie();
+  } else {
+    window.ttq.disableCookie();
+  }
 }
 
 export default function init(modal) {
@@ -116,7 +156,7 @@ export default function init(modal) {
     setCookie(COOKIE_NAME, consentString);
     setCookie(COOKIE_NAME + '-hash', hash);
     runEvent(modal);
-    googleConsentMode('update');
+    updateConsentMode();
     modal.hide();
   });
 
@@ -131,7 +171,7 @@ export default function init(modal) {
     setCookie(COOKIE_NAME, consentString);
     setCookie(COOKIE_NAME + '-hash', hash);
     runEvent(modal);
-    googleConsentMode('update');
+    updateConsentMode();
     modal.hide();
   });
 }
