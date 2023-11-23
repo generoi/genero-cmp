@@ -38,9 +38,8 @@ export function googleConsentMode() {
     'ad_storage': consents.length ? (consents[2] === '1' ? 'granted' : 'denied') : 'denied',
   }
 
-  gtag('set', {consents: consentState});
   gtag('consent', 'update', consentState);
-  gtag('event', 'gtm.init_consent');
+  gtag('set', {consents: consentState});
 }
 
 export function metaConsentMode() {
