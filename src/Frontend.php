@@ -12,7 +12,10 @@ class Frontend
         $this->name = $name;
         $this->settings = apply_filters('gds_cmp_settings', get_option($name));
 
-        add_action('wp_head', [$this, 'wpHead']);
+        // Before enqueued scripts are added so the default consent is set
+        // before cookie consent runs
+        add_action('wp_head', [$this, 'wpHead'], 8);
+
         add_action('wp_footer', [$this, 'wpFooter']);
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         add_action('init', [$this, 'removeCookies']);
@@ -43,6 +46,13 @@ class Frontend
         <script>
             var dataLayer = dataLayer || [];
             dataLayer.push(<?= wp_json_encode($datalayer_content, JSON_UNESCAPED_UNICODE) ?>);
+
+            function gtag() { dataLayer.push(arguments) };
+            gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'analytics_storage': 'denied',
+                'wait_for_update': 500
+            });
         </script>
         <!-- End DataLayer by genero-cmp -->
 

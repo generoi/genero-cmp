@@ -45,7 +45,8 @@ class Plugin
             "{$this->name}/js",
             "{$this->url}/dist/main.js",
             [],
-            filemtime($this->path . '/dist/main.js')
+            filemtime($this->path . '/dist/main.js'),
+            ['strategy' => 'async'],
         );
         // Support async loading if a plugin implements it.
         wp_script_add_data("{$this->name}/js", 'async', true);

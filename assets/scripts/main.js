@@ -10,6 +10,8 @@ import './accordion-item';
 import './toggle-button';
 import cookieConsent, {EVENT_CONSENT, getConsentData, initConsentMode } from './cookie-consent';
 
+// Note that this needs to run after the default consent mode has been added to
+// the datalayer
 initConsentMode();
 
 function ready(fn) {

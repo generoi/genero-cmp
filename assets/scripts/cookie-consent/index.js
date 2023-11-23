@@ -49,19 +49,25 @@ function runEvent(modal) {
   window.dispatchEvent(event);
 }
 
+function hasConsentSet() {
+  const consents = getConsentData();
+  const consentHash = getCookie(COOKIE_NAME + '-hash');
+  return consents.length && consentHash;
+}
+
 export function initConsentMode() {
-  googleConsentMode('default');
-  metaConsentMode();
-  tiktokConsentMode();
+  if (hasConsentSet()) {
+    updateConsentMode();
+  }
 }
 
 export function updateConsentMode() {
-  googleConsentMode('update');
+  googleConsentMode();
   metaConsentMode();
   tiktokConsentMode();
 }
 
-export function googleConsentMode(type = 'default') {
+export function googleConsentMode() {
   window.dataLayer = window.dataLayer || [];
 
   function gtag() {
@@ -70,7 +76,7 @@ export function googleConsentMode(type = 'default') {
 
   const consents = getConsentData();
 
-  gtag('consent', type, {
+  gtag('consent', 'update', {
     'analytics_storage': consents.length ? (consents[1] === '1' ? 'granted' : 'denied') : 'denied',
     'ad_storage': consents.length ? (consents[2] === '1' ? 'granted' : 'denied') : 'denied',
   });
@@ -123,7 +129,7 @@ export default function init(modal) {
   )
 
   // Display the modal if there's no cookie
-  if (!consents.length || !consentHash) {
+  if (!hasConsentSet()) {
     modal.visible = true;
   }
 
