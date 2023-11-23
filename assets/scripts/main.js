@@ -8,11 +8,9 @@ import './modal-dialog';
 import './accordion';
 import './accordion-item';
 import './toggle-button';
-import cookieConsent, {EVENT_CONSENT, getConsentData, initConsentMode } from './cookie-consent';
-
-// Note that this needs to run after the default consent mode has been added to
-// the datalayer
-initConsentMode();
+import cookieConsent from './cookie-consent';
+import {EVENT_CONSENT, getConsentData } from './api';
+import {gtag} from './utils';
 
 function ready(fn) {
   if (document.readyState !== 'loading') {

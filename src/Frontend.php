@@ -12,12 +12,9 @@ class Frontend
         $this->name = $name;
         $this->settings = apply_filters('gds_cmp_settings', get_option($name));
 
-        // Before enqueued scripts are added so the default consent is set
-        // before cookie consent runs
-        add_action('wp_head', [$this, 'wpHead'], 8);
-
+        add_action('wp_head', [$this, 'wpHead'], 9);
         add_action('wp_footer', [$this, 'wpFooter']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueueAssets'], 0);
         add_action('init', [$this, 'removeCookies']);
         add_action('wp_body_open', [$this, 'consentManager']);
 
@@ -46,17 +43,11 @@ class Frontend
         <script>
             var dataLayer = dataLayer || [];
             dataLayer.push(<?= wp_json_encode($datalayer_content, JSON_UNESCAPED_UNICODE) ?>);
-
-            function gtag() { dataLayer.push(arguments) };
-            gtag('consent', 'default', {
-                'ad_storage': 'denied',
-                'analytics_storage': 'denied',
-                'wait_for_update': 500
-            });
         </script>
         <!-- End DataLayer by genero-cmp -->
 
         <?php
+
         if (!empty($this->settings['container_off'])) {
             return;
         }
@@ -67,6 +58,7 @@ class Frontend
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                console.debug('load gtm');
             })(window,document,'script','dataLayer','<?= $this->settings['gtm_id']; ?>');</script>
         <!-- End Google Tag Manager by genero-cmp -->
 
@@ -480,26 +472,6 @@ class Frontend
             </div>
             </div>
         </gds-cmp-modal-dialog>';
-
-        $body .= "
-            <!-- Consent Manager by genero-cmp -->
-            <script>
-                window.dataLayer = window.dataLayer || []
-                // window.dataLayer = dataLayer
-                ;(function() {
-                    // TCF v2 API present, now check if CMP is loaded
-                    window.addEventListener('genero-cmp-accept', function(event) {
-                        console.log(event)
-                        // Push consent data to dataLayer for easy access in GTM.
-                        window.dataLayer.push({
-                            generoCmpSettings: event.detail.settings,
-                            generoCmpConsents: event.detail.consents,
-                        })
-                    })
-                })()
-            </script>
-            <!-- Consent Manager by genero-cmp -->
-            ";
 
         echo $body;
     }

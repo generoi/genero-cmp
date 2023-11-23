@@ -50,6 +50,11 @@ class Plugin
         );
         // Support async loading if a plugin implements it.
         wp_script_add_data("{$this->name}/js", 'async', true);
+        wp_add_inline_script(
+            "{$this->name}/js",
+            file_get_contents($this->path . '/dist/inline.js'),
+            'before'
+        );
 
         wp_register_style(
             "{$this->name}/css",

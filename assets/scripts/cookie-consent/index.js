@@ -1,27 +1,10 @@
+import { COOKIE_NAME, EVENT_CONSENT, getConsentData, hasDefinedConsent, updateConsentMode } from '../api';
 import { getCookie, setCookie, deleteWrongCookie } from '../utils';
 import './index.scss';
-
-/**
- * Cookie format: (version,consent1,consent2,consent3,consent4)  Example(String): "1,1,1,0,1"
- */
-export const COOKIE_NAME = 'gds-consent';
-export const EVENT_CONSENT = 'genero-cmp-accept';
-
-export function getConsentData() {
-  return parseConsentString(
-    getCookie(COOKIE_NAME)
-  );
-}
 
 function parseVersion(consentString) {
   const values = consentString?.split(',') || [];
   return values[0];
-}
-
-function parseConsentString(consentString) {
-  const values = consentString?.split(',') || [];
-  values.shift(); // remove version number;
-  return values;
 }
 
 function buildConsentString(values, revisedVersion = 1) {
@@ -49,67 +32,6 @@ function runEvent(modal) {
   window.dispatchEvent(event);
 }
 
-function hasConsentSet() {
-  const consents = getConsentData();
-  const consentHash = getCookie(COOKIE_NAME + '-hash');
-  return consents.length && consentHash;
-}
-
-export function initConsentMode() {
-  if (hasConsentSet()) {
-    updateConsentMode();
-  }
-}
-
-export function updateConsentMode() {
-  googleConsentMode();
-  metaConsentMode();
-  tiktokConsentMode();
-}
-
-export function googleConsentMode() {
-  window.dataLayer = window.dataLayer || [];
-
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-
-  const consents = getConsentData();
-
-  gtag('consent', 'update', {
-    'analytics_storage': consents.length ? (consents[1] === '1' ? 'granted' : 'denied') : 'denied',
-    'ad_storage': consents.length ? (consents[2] === '1' ? 'granted' : 'denied') : 'denied',
-  });
-}
-
-export function metaConsentMode() {
-  if (!window.fbq) {
-    return;
-  }
-
-  const consents = getConsentData();
-  const hasConsent = consents.length && consents[1] === '1' && consents[2] === '1';
-  if (hasConsent) {
-    window.fbq('consent', 'grant');
-  } else {
-    window.fbq('consent', 'revoke');
-  }
-}
-
-export function tiktokConsentMode() {
-  if (!window.ttq) {
-    return;
-  }
-
-  const consents = getConsentData();
-  const hasConsent = consents.length && consents[1] === '1' && consents[2] === '1';
-  if (hasConsent) {
-    window.ttq.enableCookie();
-  } else {
-    window.ttq.disableCookie();
-  }
-}
-
 export default function init(modal) {
   const hash = modal.attributes['data-cookie-consent-hash'].value;
   const acceptSelectedEl = modal.querySelector('[data-cookie-consent-accept-selected]');
@@ -129,7 +51,7 @@ export default function init(modal) {
   )
 
   // Display the modal if there's no cookie
-  if (!hasConsentSet()) {
+  if (!hasDefinedConsent()) {
     modal.visible = true;
   }
 
