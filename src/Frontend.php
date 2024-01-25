@@ -17,6 +17,7 @@ class Frontend
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets'], 0);
         add_action('init', [$this, 'removeCookies']);
         add_action('wp_body_open', [$this, 'consentManager']);
+        add_filter('wp_resource_hints', [$this, 'addPreconnectHint'], 10, 2);
 
         if (!empty($this->settings['event_user_logged_in'])) {
             add_action('wp_login', [$this, 'setLoginCookie']);
@@ -25,6 +26,27 @@ class Frontend
         if (!empty($this->settings['event_new_user_reg'])) {
             add_action('user_register', [$this, 'setRegisterCookie']);
         }
+    }
+
+    public function addPreconnectHint(array $hints, string $type): array
+    {
+        if ($type === 'preconnect') {
+            if (empty($this->settings['gtm_id'])) {
+                return $hints;
+            }
+            if (isset($_GET['no_gtm'])) {
+                return $hints;
+            }
+            if (!empty($this->settings['container_off'])) {
+                return $hints;
+            }
+            $hints[] = [
+                'href' => 'https://www.googletagmanager.com',
+                'crossorigin',
+            ];
+        }
+
+        return $hints;
     }
 
     public function wpHead()
