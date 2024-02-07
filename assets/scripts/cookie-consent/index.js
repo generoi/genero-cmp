@@ -85,8 +85,8 @@ export default function init(modal) {
     setCookie(COOKIE_NAME + '-hash', hash);
     runEvent(modal);
     updateConsentMode();
-    modal.hide();
-  });
+    requestAnimationFrame(() => modal.hide());
+  }, {passive: true});
 
   // Accept all cookies and close modal
   acceptAllEl.addEventListener('click', () => {
@@ -100,6 +100,6 @@ export default function init(modal) {
     setCookie(COOKIE_NAME + '-hash', hash);
     runEvent(modal);
     updateConsentMode();
-    modal.hide();
-  });
+    requestAnimationFrame(() => modal.hide());
+  }, {passive: true});
 }

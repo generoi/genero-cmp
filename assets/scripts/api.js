@@ -26,9 +26,9 @@ export function hasDefinedConsent() {
 
 
 export function updateConsentMode() {
-  googleConsentMode();
-  metaConsentMode();
-  tiktokConsentMode();
+  setTimeout(googleConsentMode, 0);
+  setTimeout(metaConsentMode, 0);
+  setTimeout(tiktokConsentMode, 0);
 }
 
 export function googleConsentMode() {
