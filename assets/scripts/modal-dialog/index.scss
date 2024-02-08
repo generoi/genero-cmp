@@ -3,6 +3,7 @@
 gds-cmp-modal-dialog {
   display: flex;
   z-index: 100;
+  contain: strict;
 
   &::part(dialog) {
     box-sizing: border-box;
@@ -22,6 +23,7 @@ gds-cmp-modal-dialog {
     animation: fade-in 0.2s both;
     background: rgba(0 0 0 / 10%);
     backdrop-filter: blur(2px);
+    contain: strict;
   }
 
   &[aria-hidden] {

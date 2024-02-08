@@ -32,8 +32,8 @@ export class ModelDialog extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addEventListener(EVENT_SHOW, this.show.bind(this));
-    this.addEventListener(EVENT_HIDE, this.hide.bind(this));
+    this.addEventListener(EVENT_SHOW, () => requestAnimationFrame(this.show.bind(this)));
+    this.addEventListener(EVENT_HIDE, () => requestAnimationFrame(this.hide.bind(this)));
 
     this.render();
 

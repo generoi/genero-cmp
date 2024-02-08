@@ -53,8 +53,8 @@ export class GdsAccordionItem extends HTMLElement {
     this.titleId = `accordion-title-${this.constructor.#idCounter}`
 
     this.addEventListener('keydown', this.handleKeyDown.bind(this));
-    this.addEventListener(EVENT_OPEN, this.open.bind(this));
-    this.addEventListener(EVENT_CLOSE, this.close.bind(this));
+    this.addEventListener(EVENT_OPEN, () => requestAnimationFrame(this.open.bind(this)));
+    this.addEventListener(EVENT_CLOSE, () => requestAnimationFrame(this.close.bind(this)));
     this.render();
   }
 
