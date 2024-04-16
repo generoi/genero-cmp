@@ -426,75 +426,17 @@ class Frontend
             unset($item['label']);
             unset($item['description']);
         }
-        $hash = md5(json_encode($hash));
 
-        $configs = esc_html(wp_json_encode($settings));
-        $body = '
-            <gds-cmp-modal-dialog
-                class="cookie-consent"
-                aria-labelledby="cc-heading"
-                aria-describedby="cc-description"
-                persistent
-                scroll-lock
-                data-cookie-consent-hash="' . $hash . '"
-                data-configs="' . $configs . '"
-                >
-                <h2 id="cc-heading">' . __('Cookie Preferences', 'genero-cmp') . '</h2>
-                <p id="cc-description">
-                ' . __('We use cookies to provide a better user experience and personalised service. By consenting to the use of cookies, we can develop an even better service and will be able to provide content that is interesting to you. You are in control of your cookie preferences, and you may change them at any time. Read more about our cookies.', 'genero-cmp') . '
-                </p>
-            ';
+        $this->view('consent-dialog.php', [
+            'hash' => md5(json_encode($hash)),
+            'settings' => $settings,
+        ]);
+    }
 
-        if (count($settings['consents']) > 0) {
-            $body .= '
-                <div id="cookie-settings" class="cookie-consent__cookies">
-
-                <gds-cmp-accordion>
-                ';
-            foreach ($settings['consents'] as $consent) {
-                $body .= '
-                    <gds-cmp-accordion-item>
-                        <label slot="label">
-                            <input type="checkbox" name="cookie-consent" ' . (($consent['necessary']) ? 'required' : '') . ' ' . ((@$consent['consent']) ? 'checked disabled' : '') . ' value="' . $consent['id'] . '">
-                            ' . $consent['label'] . '
-                        </label>
-                        <i slot="icon" class="fa fa-solid fa-chevron-down"></i>
-
-                        <p>' . $consent['description'] . '</p>
-                    </gds-cmp-accordion-item>
-                    ';
-            }
-                    $body .= '
-                </gds-cmp-accordion>
-                </div>
-        ';
+    protected function view(string $view, array $args = []): void
+    {
+        if (! get_template_part('genero-cmp/' . $view, null, $args)) {
+            load_template(dirname(__DIR__) . "/templates/$view", true, $args);
         }
-        $body .= '
-            <div class="wp-block-buttons cookie-consent__buttons">
-            <div class="wp-block-button is-style-outline" id="accept-selected-button">
-                <button
-                data-cookie-consent-accept-selected
-                class="wp-block-button__link"
-                >' . __('Accept selected cookies', 'genero-cmp') . '</toggle-button>
-            </div>
-
-            <div class="wp-block-button is-style-outline">
-                <gds-cmp-toggle-button
-                persistent
-                aria-controls="cookie-settings accept-selected-button"
-                class="wp-block-button__link"
-                >' . __('Edit cookie settings', 'genero-cmp') . '</gds-cmp-toggle-button>
-            </div>
-
-            <div class="wp-block-button">
-                <button
-                data-cookie-consent-accept-all
-                class="wp-block-button__link"
-                >' . __('Accept all cookies', 'genero-cmp') . '</button>
-            </div>
-            </div>
-        </gds-cmp-modal-dialog>';
-
-        echo $body;
     }
 }
