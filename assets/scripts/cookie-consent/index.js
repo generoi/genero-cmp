@@ -3,6 +3,9 @@ import { getCookie, setCookie, removeCookie } from '../utils';
 import { Consents } from '../api';
 import './index.scss';
 
+/**
+ * @returns {void}
+ */
 function runEvent(modal) {
   const settings = JSON.parse(modal.attributes['data-configs'].value);
   const consentData = getConsentData();

@@ -109,7 +109,7 @@ function parseConsentString(consentString) {
 /**
  * Update all supported consent modes.
  *
- * @returns void
+ * @returns {void}
  */
 export function updateConsentMode() {
   setTimeout(googleConsentMode, 0);
@@ -120,7 +120,7 @@ export function updateConsentMode() {
 /**
  * Update Google Tag Manager consent mode.
  *
- * @returns void
+ * @returns {void}
  */
 export function googleConsentMode() {
   const consentData = getConsentData();
@@ -146,7 +146,7 @@ export function googleConsentMode() {
 /**
  * Update Meta pixel consent mode.
  *
- * @returns void
+ * @returns {void}
  */
 export function metaConsentMode() {
   if (!window.fbq) {
@@ -165,7 +165,7 @@ export function metaConsentMode() {
 /**
  * Update TikTok consent mode.
  *
- * @returns void
+ * @returns {void}
  */
 export function tiktokConsentMode() {
   if (!window.ttq) {
