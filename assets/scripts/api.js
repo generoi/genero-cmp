@@ -10,6 +10,19 @@ export const NECESSARY_STORAGE_CONSENT = 'necessary';
 export const AD_STORAGE_CONSENT = 'marketing';
 export const ANALYTICS_STORAGE_CONSENT = 'statistics';
 
+export const NECESSARY_COOKIES = [
+  COOKIE_NAME,
+  `${COOKIE_NAME}-hash`,
+  'wp-settings-',
+  'wp-settings-time-',
+  'wordpress_test_cookie',
+  'wordpress_logged_in_',
+  'wordpress_sec_',
+  'wp_woocommerce_session_',
+  'woocommerce_cart_hash',
+  'woocommerce_items_in_cart',
+];
+
 /**
  * @typedef {('necessary'|'marketing'|'statistics')} Consent
  */

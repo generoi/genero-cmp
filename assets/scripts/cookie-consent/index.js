@@ -1,5 +1,5 @@
-import { COOKIE_NAME, EVENT_CONSENT, buildConsentString, getConsentData, hasConsent, updateConsentMode } from '../api';
-import { getCookie, setCookie, removeCookie } from '../utils';
+import { AD_STORAGE_CONSENT, ANALYTICS_STORAGE_CONSENT, COOKIE_NAME, EVENT_CONSENT, NECESSARY_COOKIES, buildConsentString, getConsentData, hasConsent, updateConsentMode } from '../api';
+import { getCookie, setCookie, removeCookie, getAllCookies } from '../utils';
 import { Consents } from '../api';
 import './index.scss';
 
@@ -37,6 +37,23 @@ function getConsentsFromInputs(inputs) {
   }, {});
 }
 
+/**
+ * Remove non-necessary cookies
+ * @returns {void}
+ */
+function removeNonNecessaryCookies() {
+  const necessaryCookies = window.generoCmp?.NECESSARY_COOKIES || NECESSARY_COOKIES;
+  for (const cookie of getAllCookies()) {
+    const isNecessaryCookie = necessaryCookies.some((necessaryCookie) => {
+      const regex = new RegExp(`^${necessaryCookie}`);
+      return regex.test(cookie);
+    });
+    if (!isNecessaryCookie) {
+      console.debug('Removing non-necessary cookie', cookie);
+      removeCookie(cookie)
+    }
+  }
+}
 
 export default function init(modal) {
   const hash = modal.attributes['data-cookie-consent-hash'].value;
@@ -93,7 +110,17 @@ export default function init(modal) {
 
   // Accept selected cookies and close modal
   acceptSelectedEl.addEventListener('click', () => {
+    const hadAdConsent = hasConsent(AD_STORAGE_CONSENT);
+    const hadAnalyticsConsent = hasConsent(ANALYTICS_STORAGE_CONSENT);
+
     setupConsent();
+
+    // If consent was revoked, remove all cookies except necessary ones.
+    const hasRevokedAdConsent = hadAdConsent && !hasConsent(AD_STORAGE_CONSENT);
+    const hasRevokedAnalyticsConsent = hadAnalyticsConsent && !hasConsent(ANALYTICS_STORAGE_CONSENT);
+    if (hasRevokedAdConsent || hasRevokedAnalyticsConsent) {
+      removeNonNecessaryCookies();
+    }
   }, {passive: true});
 
   // Accept all cookies and close modal
@@ -106,6 +133,7 @@ export default function init(modal) {
   declineAllEl.addEventListener('click', () => {
     inputs.forEach((input) => input.checked = input.required)
     setupConsent();
+    removeNonNecessaryCookies();
   }, {passive: true});
 
   return {
