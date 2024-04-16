@@ -399,20 +399,20 @@ class Frontend
         $settings['lang'] = get_locale();
         $settings['consents'] = [
             [
-                'id' => 'consent-necessary',
+                'id' => 'necessary',
                 'label' => __('Necessary', 'genero-cmp'),
                 'description' => __('These cookies are technically required for our core website to work properly, e.g. security functions or your cookie consent preferences.', 'genero-cmp'),
                 'necessary' => true,
                 'consent' => true,
             ],
             [
-                'id' => 'consent-statistics',
+                'id' => 'statistics',
                 'label' => __('Statistics', 'genero-cmp'),
                 'description' => __('In order to improve our website going forward, we anonymously collect data for statistical and analytical purposes. With these cookies we can, for instance, monitor the number or duration of visits of specific pages of our website helping us in optimizing user experience.', 'genero-cmp'),
                 'necessary' => false,
             ],
             [
-                'id' => 'consent-marketing',
+                'id' => 'marketing',
                 'label' => __('Marketing', 'genero-cmp'),
                 'description' => __('These cookies help us in measuring and optimizing our marketing efforts.', 'genero-cmp'),
                 'necessary' => false,

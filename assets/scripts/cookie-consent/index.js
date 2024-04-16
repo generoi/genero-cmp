@@ -1,36 +1,39 @@
-import { COOKIE_NAME, EVENT_CONSENT, getConsentData, hasDefinedConsent, updateConsentMode } from '../api';
+import { COOKIE_NAME, EVENT_CONSENT, buildConsentString, getConsentData, hasConsent, updateConsentMode } from '../api';
 import { getCookie, setCookie, removeCookie } from '../utils';
+import { Consents } from '../api';
 import './index.scss';
-
-function parseVersion(consentString) {
-  const values = consentString?.split(',') || [];
-  return values[0];
-}
-
-function buildConsentString(values, revisedVersion = 1) {
-  values.unshift(revisedVersion);
-  return values.join(',');
-}
 
 function runEvent(modal) {
   const settings = JSON.parse(modal.attributes['data-configs'].value);
-  const cookieConsents = getConsentData();
+  const consentData = getConsentData();
 
-  let consents = {};
-
-  settings.consents.forEach((item, index) => {
-    consents[item.id] = cookieConsents[index];
-  });
-
-  let event = new CustomEvent(EVENT_CONSENT, {
+  const event = new CustomEvent(EVENT_CONSENT, {
     detail: {
       message: 'Cookies have been accepted',
-      settings: settings,
-      consents: consents,
+      settings,
+      consentData,
     }
   });
   window.dispatchEvent(event);
+
+  for (const [consent, value] of Object.entries(consentData.consents)) {
+    if (value) {
+      window.dispatchEvent(new CustomEvent(`${EVENT_CONSENT}.${consent}`));
+    }
+  }
 }
+
+/**
+ * @param {NodeList} inputs
+ * @returns {Consents}
+ */
+function getConsentsFromInputs(inputs) {
+  return inputs.reduce((carry, input) => {
+    carry[input.value] = input.checked ? true : false;
+    return carry;
+  }, {});
+}
+
 
 export default function init(modal) {
   const hash = modal.attributes['data-cookie-consent-hash'].value;
@@ -44,80 +47,77 @@ export default function init(modal) {
     input.addEventListener('click', (e) => e.stopPropagation());
   }
 
-  const consents = getConsentData();
-  const consentHash = getCookie(COOKIE_NAME + '-hash');
-
-  let version = parseVersion(
-    getCookie(COOKIE_NAME)
-  )
+  const consentData = getConsentData();
+  const consentHash = getCookie(`${COOKIE_NAME}-hash`);
+  const consents = consentData.consents;
+  let version = consentData.version;
+  const hasConsented = Object.keys(consents).length;
 
   // Display the modal if there's no cookie
-  if (!hasDefinedConsent()) {
+  if (!hasConsented || !consentHash) {
+    console.debug('missing consent cookie', consents, consentHash);
     modal.visible = true;
   }
 
   // Pre-fill the inputs according to the cookie value
-  consents.forEach((consent, idx) => {
-    if(!(typeof inputs.at(idx) === 'undefined'))  {
-      inputs.at(idx).checked = !!parseInt(consent)
-    }
-  });
+  for (const input of inputs) {
+    input.checked = hasConsent(input.value);
+  }
 
   // Display the modal if the cookie hash doesn't match the current hash
-  if(consentHash !== hash) {
+  if (consentHash !== hash) {
+    console.debug('consent hash changed', consentHash, hash);
     modal.visible = true;
     version++;
   }
 
   // run event if cookie is set
-  if (consents.length || consentHash) {
+  if (hasConsented || consentHash) {
     runEvent(modal);
+  }
+
+  function setupConsent() {
+    const consentString = buildConsentString(
+      getConsentsFromInputs(inputs),
+      (version > 1) ? version : 1
+    );
+    setCookie(COOKIE_NAME, consentString);
+    setCookie(`${COOKIE_NAME}-hash`, hash);
+    runEvent(modal);
+    updateConsentMode();
+    requestAnimationFrame(() => modal.hide());
   }
 
   // Accept selected cookies and close modal
   acceptSelectedEl.addEventListener('click', () => {
-    const consentString = buildConsentString(
-      inputs.map(input => input.checked ? 1 : 0),
-      (version > 1) ? version : 1
-    );
-    removeCookie(COOKIE_NAME);
-    removeCookie(`${COOKIE_NAME}-hash`);
-    setCookie(COOKIE_NAME, consentString);
-    setCookie(COOKIE_NAME + '-hash', hash);
-    runEvent(modal);
-    updateConsentMode();
-    requestAnimationFrame(() => modal.hide());
+    setupConsent();
   }, {passive: true});
 
   // Accept all cookies and close modal
   acceptAllEl.addEventListener('click', () => {
-    const consentString = buildConsentString(
-      inputs.map(input => 1),
-      (version > 1) ? version : 1
-    );
-    removeCookie(COOKIE_NAME);
-    removeCookie(`${COOKIE_NAME}-hash`);
-
-    setCookie(COOKIE_NAME, consentString);
-    setCookie(COOKIE_NAME + '-hash', hash);
-    runEvent(modal);
-    updateConsentMode();
-    requestAnimationFrame(() => modal.hide());
+    inputs.forEach((input) => input.checked = true)
+    setupConsent();
   }, {passive: true});
 
   // Decline all cookies and close modal
   declineAllEl.addEventListener('click', () => {
-    const consentString = buildConsentString(
-      inputs.map(input => input.required ? 1 : 0),
-      (version > 1) ? version : 1
-    );
-    removeCookie(COOKIE_NAME);
-    removeCookie(`${COOKIE_NAME}-hash`);
-
-    setCookie(COOKIE_NAME, consentString);
-    setCookie(COOKIE_NAME + '-hash', hash);
-    runEvent(modal);
-    updateConsentMode();
-    requestAnimationFrame(() => modal.hide());
+    inputs.forEach((input) => input.checked = input.required)
+    setupConsent();
   }, {passive: true});
+
+  return {
+    modal,
+    hasConsent,
+    show() {
+      modal.show();
+    },
+    hide() {
+      modal.hide();
+    },
+    withdraw() {
+      removeCookie(COOKIE_NAME);
+      removeCookie(`${COOKIE_NAME}-hash`);
+      modal.show();
+    },
+  }
 }

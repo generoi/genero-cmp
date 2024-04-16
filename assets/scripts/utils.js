@@ -1,3 +1,7 @@
+export function isObject(value) {
+  return value?.constructor === Object;
+}
+
 export function setCookie(name, value) {
   const expires = new Date();
   expires.setMonth(expires.getMonth() + 13);

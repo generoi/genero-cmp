@@ -9,8 +9,7 @@ import './accordion';
 import './accordion-item';
 import './toggle-button';
 import cookieConsent from './cookie-consent';
-import {EVENT_CONSENT, getConsentData } from './api';
-import {gtag} from './utils';
+import {EVENT_CONSENT, getConsentData, hasConsent } from './api';
 
 function ready(fn) {
   if (document.readyState !== 'loading') {
@@ -20,15 +19,16 @@ function ready(fn) {
 }
 
 ready(() => {
-  let cookieConsentContainer = document.querySelector('.cookie-consent');
+  // Initialize the cookie consent banenr and expose window.generoCmp object.
+  const cookieConsentContainer = document.querySelector('.cookie-consent');
   if (cookieConsentContainer) {
     window.generoCmp = {
-      getConsentData,
+      ...cookieConsent(cookieConsentContainer),
       evaluateTags,
     };
-    cookieConsent(cookieConsentContainer);
   }
 
+  // Attach open click listeners to all links with selector `.js-show-cookieconsent`
   for (const link of document.querySelectorAll('.js-show-cookieconsent')) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
@@ -37,20 +37,17 @@ ready(() => {
   }
 });
 
+/**
+ * Evaluate and initialize all script tags using data-cmp-consent="" string
+ *
+ * @param {Node} context
+ * @returns void
+ */
 function evaluateTags(context = document) {
-  const consents = getConsentData();
-  const userConsents = [
-    consents.length && consents[1] === '1' ? 'statistics' : false,
-    consents.length && consents[2] === '1' ? 'marketing' : false,
-  ].filter(Boolean).sort();
-
   for (const el of context.querySelectorAll(`[data-cmp-consent]`)) {
     const domConsents = el.dataset.cmpConsent.split(' ').sort();
 
-    const hasAllConsents = domConsents.length === userConsents.length
-      && domConsents.every((consent, idx) => consent === userConsents[idx]);
-
-    if (!hasAllConsents) {
+    if (!hasConsent(...domConsents)) {
       continue;
     }
 
@@ -74,16 +71,15 @@ function evaluateTags(context = document) {
   }
 }
 
+// Add support for data-cmp-consent="marketing analytics necessary" attributes on script, img, video and
+// iframe elements.
 window.addEventListener(EVENT_CONSENT, () => evaluateTags());
 
+// Add has-genero-cmp-consent--{'marketing'|'analytics'|'necessary'} classes to the body element
 window.addEventListener(EVENT_CONSENT, () => {
-  const consents = getConsentData();
-  const consentData = {
-    'statistics': consents.length ? consents[1] === '1' : false,
-    'marketing': consents.length ? consents[2] === '1' : false,
-  }
+  const consentData = getConsentData();
 
-  for (const [consent, value] of Object.entries(consentData)) {
+  for (const [consent, value] of Object.entries(consentData.consents)) {
     document.body.classList.toggle(`has-genero-cmp-consent--${consent}`, value);
   }
 });

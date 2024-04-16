@@ -1,4 +1,4 @@
-import { hasDefinedConsent, updateConsentMode } from './api';
+import { getConsentData, updateConsentMode } from './api';
 import { gtag } from './utils';
 
 // Default consent
@@ -7,7 +7,8 @@ gtag('consent', 'default', {
   'analytics_storage': 'denied',
 });
 
-if (hasDefinedConsent()) {
+const hasConsented = Object.keys(getConsentData().consents).length > 0;
+if (hasConsented) {
   updateConsentMode();
 }
 
