@@ -7,9 +7,9 @@
     data-cookie-consent-hash="<?php echo esc_attr($args['hash']); ?>"
     data-configs="<?php echo esc_html(wp_json_encode($args['settings'])); ?>"
 >
-    <h2 id="cc-heading"><?php echo __('Cookie Preferences', 'genero-cmp'); ?></h2>
+    <h2 id="cc-heading"><?php echo esc_html(__('Cookie Preferences', 'genero-cmp')); ?></h2>
     <p id="cc-description">
-        <?php echo __('We use cookies to provide a better user experience and personalised service. By consenting to the use of cookies, we can develop an even better service and will be able to provide content that is interesting to you. You are in control of your cookie preferences, and you may change them at any time. Read more about our cookies.', 'genero-cmp'); ?>
+        <?php echo esc_html(__('We use cookies to provide a better user experience and personalised service. By consenting to the use of cookies, we can develop an even better service and will be able to provide content that is interesting to you. You are in control of your cookie preferences, and you may change them at any time. Read more about our cookies.', 'genero-cmp')); ?>
     </p>
 
     <?php if (count($args['settings']['consents']) > 0) : ?>
@@ -23,13 +23,13 @@
                                 name="cookie-consent"
                                 <?php if ($consent['necessary'] ?? false) : ?>required<?php endif; ?>
                                 <?php if ($consent['consent'] ?? false) : ?>checked disabled<?php endif; ?>
-                                value="<?php echo $consent['id']; ?>"
+                                value="<?php echo esc_attr($consent['id']); ?>"
                             >
-                            <?php echo $consent['label']; ?>
+                            <?php echo esc_html($consent['label']); ?>
                         </label>
 
                         <i slot="icon" class="fa fa-solid fa-chevron-down"></i>
-                        <p><?php echo $consent['description']; ?></p>
+                        <p><?php echo esc_html($consent['description']); ?></p>
                     </gds-cmp-accordion-item>
                 <?php endforeach; ?>
             </gds-cmp-accordion>
@@ -40,7 +40,7 @@
             <button
                 data-cookie-consent-accept-selected
                 class="wp-block-button__link"
-            ><?php echo __('Accept selected cookies', 'genero-cmp'); ?></button>
+            ><?php echo esc_html(__('Accept selected cookies', 'genero-cmp')); ?></button>
         </div>
 
         <div class="wp-block-button is-style-outline">
@@ -48,21 +48,21 @@
                 persistent
                 aria-controls="cookie-settings accept-selected-button"
                 class="wp-block-button__link"
-            ><?php echo __('Edit cookie settings', 'genero-cmp'); ?></gds-cmp-toggle-button>
+            ><?php echo esc_html(__('Edit cookie settings', 'genero-cmp')); ?></gds-cmp-toggle-button>
         </div>
 
         <div class="wp-block-button is-style-outline">
             <button
                 data-cookie-consent-decline-all
                 class="wp-block-button__link"
-            ><?php echo __('Decline all cookies', 'genero-cmp'); ?></button>
+            ><?php echo esc_html(__('Decline all cookies', 'genero-cmp')); ?></button>
         </div>
 
         <div class="wp-block-button">
             <button
                 data-cookie-consent-accept-all
                 class="wp-block-button__link"
-            ><?php echo __('Accept all cookies', 'genero-cmp'); ?></button>
+            ><?php echo esc_html(__('Accept all cookies', 'genero-cmp')); ?></button>
         </div>
     </div>
 </gds-cmp-modal-dialog>
