@@ -55,7 +55,7 @@
             <button
                 data-cookie-consent-decline-all
                 class="wp-block-button__link"
-            ><?php echo esc_html(__('Decline all cookies', 'genero-cmp')); ?></button>
+            ><?php echo esc_html(__('Decline all', 'genero-cmp')); ?></button>
         </div>
 
         <div class="wp-block-button">
