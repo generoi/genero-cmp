@@ -17,6 +17,9 @@ class Plugins
         new FacebookForWooCommerce($this->settings);
         new TiktokForBusiness($this->settings);
 
+        // wp-consent-api integration
+        add_filter('wp_get_consent_type', fn () => 'optin');
+
         add_action('init', function () {
             // CTX Feed
             if (!empty($this->settings['plugin_ctx_feed_facebook_pixel_off'])) {

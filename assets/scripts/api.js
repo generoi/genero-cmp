@@ -128,6 +128,7 @@ export function updateConsentMode() {
   setTimeout(googleConsentMode, 0);
   setTimeout(metaConsentMode, 0);
   setTimeout(tiktokConsentMode, 0);
+  setTimeout(wpConsentMode, 0);
 }
 
 /**
@@ -192,4 +193,13 @@ export function tiktokConsentMode() {
     window.ttq.disableCookie();
     console.debug('tiktok disable cookies.');
   }
+}
+
+export function wpConsentMode() {
+  if (!window.wp_set_consent) {
+    return;
+  }
+
+  window.wp_set_consent('marketing', hasConsent(AD_STORAGE_CONSENT) ? 'allow' : 'deny');
+  window.wp_set_consent('statistics', hasConsent(ANALYTICS_STORAGE_CONSENT) ? 'allow' : 'deny');
 }
