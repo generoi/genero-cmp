@@ -21,8 +21,13 @@
                             <input
                                 type="checkbox"
                                 name="cookie-consent"
-                                <?php if ($consent['necessary'] ?? false) : ?>required<?php endif; ?>
-                                <?php if ($consent['consent'] ?? false) : ?>checked disabled<?php endif; ?>
+                                <?php if ($consent['necessary'] ?? false) : ?>
+                                    required
+                                <?php endif; ?>
+                                <?php if ($consent['consent'] ?? false) : ?>
+                                    checked
+                                    disabled
+                                <?php endif; ?>
                                 value="<?php echo esc_attr($consent['id']); ?>"
                             >
                             <?php echo esc_html($consent['label']); ?>
