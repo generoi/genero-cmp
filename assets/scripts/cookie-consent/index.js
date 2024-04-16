@@ -1,5 +1,5 @@
 import { COOKIE_NAME, EVENT_CONSENT, getConsentData, hasDefinedConsent, updateConsentMode } from '../api';
-import { getCookie, setCookie, deleteWrongCookie } from '../utils';
+import { getCookie, setCookie, removeCookie } from '../utils';
 import './index.scss';
 
 function parseVersion(consentString) {
@@ -79,8 +79,8 @@ export default function init(modal) {
       inputs.map(input => input.checked ? 1 : 0),
       (version > 1) ? version : 1
     );
-    deleteWrongCookie(COOKIE_NAME);
-    deleteWrongCookie(COOKIE_NAME + '-hash');
+    removeCookie(COOKIE_NAME);
+    removeCookie(`${COOKIE_NAME}-hash`);
     setCookie(COOKIE_NAME, consentString);
     setCookie(COOKIE_NAME + '-hash', hash);
     runEvent(modal);
@@ -94,8 +94,9 @@ export default function init(modal) {
       inputs.map(input => 1),
       (version > 1) ? version : 1
     );
-    deleteWrongCookie(COOKIE_NAME);
-    deleteWrongCookie(COOKIE_NAME + '-hash');
+    removeCookie(COOKIE_NAME);
+    removeCookie(`${COOKIE_NAME}-hash`);
+
     setCookie(COOKIE_NAME, consentString);
     setCookie(COOKIE_NAME + '-hash', hash);
     runEvent(modal);
