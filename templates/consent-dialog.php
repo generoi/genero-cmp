@@ -51,6 +51,13 @@
             ><?php echo __('Edit cookie settings', 'genero-cmp'); ?></gds-cmp-toggle-button>
         </div>
 
+        <div class="wp-block-button is-style-outline">
+            <button
+                data-cookie-consent-decline-all
+                class="wp-block-button__link"
+            ><?php echo __('Decline all cookies', 'genero-cmp'); ?></button>
+        </div>
+
         <div class="wp-block-button">
             <button
                 data-cookie-consent-accept-all

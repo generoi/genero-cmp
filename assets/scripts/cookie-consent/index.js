@@ -36,6 +36,7 @@ export default function init(modal) {
   const hash = modal.attributes['data-cookie-consent-hash'].value;
   const acceptSelectedEl = modal.querySelector('[data-cookie-consent-accept-selected]');
   const acceptAllEl = modal.querySelector('[data-cookie-consent-accept-all]');
+  const declineAllEl = modal.querySelector('[data-cookie-consent-decline-all]');
   const inputs = Array.from(modal.querySelectorAll('input[name="cookie-consent"]'));
 
   // Avoid checkboxes being checked toggling the accordion
@@ -92,6 +93,22 @@ export default function init(modal) {
   acceptAllEl.addEventListener('click', () => {
     const consentString = buildConsentString(
       inputs.map(input => 1),
+      (version > 1) ? version : 1
+    );
+    removeCookie(COOKIE_NAME);
+    removeCookie(`${COOKIE_NAME}-hash`);
+
+    setCookie(COOKIE_NAME, consentString);
+    setCookie(COOKIE_NAME + '-hash', hash);
+    runEvent(modal);
+    updateConsentMode();
+    requestAnimationFrame(() => modal.hide());
+  }, {passive: true});
+
+  // Decline all cookies and close modal
+  declineAllEl.addEventListener('click', () => {
+    const consentString = buildConsentString(
+      inputs.map(input => input.required ? 1 : 0),
       (version > 1) ? version : 1
     );
     removeCookie(COOKIE_NAME);
