@@ -71,17 +71,12 @@ msgid ""
 "These cookies help us in measuring and optimizing our marketing efforts."
 msgstr "Dessa cookies är nödvändiga för att sidan skall fungera korrekt."
 
-#: src/Frontend.php:397
+#: templates/consent-dialog.php:10
 msgid "Cookie Preferences"
 msgstr "Cookie-inställningar"
 
-#: src/Frontend.php:399
-msgid ""
-"We use cookies to provide a better user experience and personalised service. "
-"By consenting to the use of cookies, we can develop an even better service "
-"and will be able to provide content that is interesting to you. You are in "
-"control of your cookie preferences, and you may change them at any time. "
-"Read more about our cookies."
+#: templates/consent-dialog.php:12
+msgid "We use cookies to provide a better user experience and personalised service. By consenting to the use of cookies, we can develop an even better service and will be able to provide content that is interesting to you. You are in control of your cookie preferences, and you may change them at any time. Read more about our cookies."
 msgstr ""
 "Vi använder cookies för att ge dig en bättre användarupplevelse och "
 "personlig service. Genom att samtycka till användningen av cookies kan vi "
@@ -89,14 +84,18 @@ msgstr ""
 "för dig. Du har kontroll över dina cookiepreferenser och kan ändra dem när "
 "som helst. Läs mer om våra cookies."
 
-#: src/Frontend.php:433
+#: templates/consent-dialog.php:48
 msgid "Accept selected cookies"
 msgstr "Acceptera utvalda cookies"
 
-#: src/Frontend.php:441
+#: templates/consent-dialog.php:56
 msgid "Edit cookie settings"
 msgstr "Redigera cookies"
 
-#: src/Frontend.php:448
+#: templates/consent-dialog.php:63
+msgid "Decline all"
+msgstr "Avvisa alla"
+
+#: templates/consent-dialog.php:70
 msgid "Accept all cookies"
 msgstr "Acceptera alla cookies"

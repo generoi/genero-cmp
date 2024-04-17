@@ -74,11 +74,11 @@ msgid ""
 msgstr ""
 "Nämä evästeet auttavat meitä mittaamaan ja optimoimaan markkinointitoimiamme."
 
-#: src/Frontend.php:397
+#: templates/consent-dialog.php:10
 msgid "Cookie Preferences"
 msgstr "Evästeasetukset"
 
-#: src/Frontend.php:399
+#: templates/consent-dialog.php:12
 msgid ""
 "We use cookies to provide a better user experience and personalised service. "
 "By consenting to the use of cookies, we can develop an even better service "
@@ -92,14 +92,18 @@ msgstr ""
 "on hallinta evästeasetuksistasi, ja voit muuttaa niitä milloin tahansa. Lue "
 "lisää evästeistämme."
 
-#: src/Frontend.php:433
+#: templates/consent-dialog.php:48
 msgid "Accept selected cookies"
 msgstr "Hyväksy valitut evästeet"
 
-#: src/Frontend.php:441
+#: templates/consent-dialog.php:56
 msgid "Edit cookie settings"
 msgstr "Muokkaa evästeasetuksia"
 
-#: src/Frontend.php:448
+#: templates/consent-dialog.php:63
+msgid "Decline all"
+msgstr "Kiellä kaikki"
+
+#: templates/consent-dialog.php:70
 msgid "Accept all cookies"
 msgstr "Hyväksy kaikki evästeet"
