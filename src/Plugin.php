@@ -48,7 +48,7 @@ class Plugin
             "{$this->url}/dist/main.js",
             [],
             filemtime($this->path . '/dist/main.js'),
-            version_compare($GLOBALS['wp_version'],'6.3') >= 0 ? ['strategy' => 'async'] : false,
+            version_compare($GLOBALS['wp_version'], '6.3') >= 0 ? ['strategy' => 'async'] : false,
         );
         // Support async loading if a plugin implements it.
         wp_script_add_data("{$this->name}/js", 'async', true);

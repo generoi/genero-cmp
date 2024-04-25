@@ -7,7 +7,8 @@ namespace GeneroWP\GeneroCmp\Integrations;
  */
 class DuracelltommiGoogleTagManager
 {
-    public function __construct(array $settings) {
+    public function __construct(array $settings)
+    {
         if (! function_exists('gtm4wp_reload_options')) {
             return;
         }
