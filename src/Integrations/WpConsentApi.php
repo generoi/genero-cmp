@@ -22,7 +22,7 @@ class WpConsentApi
 
     public function addCookieInfo(): void
     {
-        if (function_exists('wp_add_cookie_info')) {
+        if (! function_exists('wp_add_cookie_info')) {
             return;
         }
         wp_add_cookie_info(
