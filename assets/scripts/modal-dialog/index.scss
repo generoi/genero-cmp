@@ -2,7 +2,7 @@
 
 gds-cmp-modal-dialog {
   display: flex;
-  z-index: 100;
+  z-index: 10000;
   contain: strict;
 
   &::part(dialog) {
