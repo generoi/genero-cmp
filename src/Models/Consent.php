@@ -4,7 +4,7 @@ namespace GeneroWP\GeneroCmp\Models;
 
 class Consent
 {
-    public const FUNCTIONAL = 'necessary';
+    public const NECESSARY = 'necessary';
     public const PREFERENCES = 'preferences';
     public const STATISTICS = 'statistics';
     public const MARKETING = 'marketing';

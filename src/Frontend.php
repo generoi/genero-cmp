@@ -409,7 +409,7 @@ class Frontend
                     return $tag;
                 }
 
-                if (count($consents) === 1 && $consents[0] === Consent::FUNCTIONAL) {
+                if (count($consents) === 1 && $consents[0] === Consent::NECESSARY) {
                     return $tag;
                 }
 

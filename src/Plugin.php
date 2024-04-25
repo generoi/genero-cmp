@@ -123,8 +123,8 @@ class Plugin
     public function consentCategories(): array
     {
         $consents[] = new Consent(
-            id: Consent::FUNCTIONAL,
-            label: __('Functional', 'genero-cmp'),
+            id: Consent::NECESSARY,
+            label: __('Necessary', 'genero-cmp'),
             description: __('These cookies are technically required for our core website to work properly, e.g. security functions or your cookie consent preferences.', 'genero-cmp'),
             necessary: true,
             consent: true,
