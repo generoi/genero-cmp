@@ -32,12 +32,12 @@ export class CmpEmbed extends HTMLElement {
   }
 
   get consent() {
-    return this.getAttribute('consent') || DEFAULT_CONSENT;
+    return this.getAttribute('consent')?.split?.(' ') || [DEFAULT_CONSENT];
   }
 
   set consent(value) {
     if (value) {
-      this.setAttribute('consent', value);
+      this.setAttribute('consent', Array.isArray(value) ? value.join(' ') : value);
     } else {
       this.removeAttribute('consent');
     }
