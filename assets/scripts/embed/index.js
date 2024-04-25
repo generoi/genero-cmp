@@ -1,6 +1,7 @@
 import { EVENT_CONSENT, NECESSARY_STORAGE_CONSENT } from '../api';
 import './index.scss';
 
+const EVENT_VISIBLE = 'cmp-embed.visible';
 const DEFAULT_CONSENT = NECESSARY_STORAGE_CONSENT;
 const DEFAULT_TAG_NAME = 'iframe';
 
@@ -64,7 +65,13 @@ export class CmpEmbed extends HTMLElement {
       newTag.setAttribute(attribute, this.getAttribute(attribute));
     }
     newTag.innerHTML = this.innerHTML;
+
     this.replaceWith(newTag);
+    this.dispatchEvent(new CustomEvent(EVENT_VISIBLE, {
+      detail: {
+        element: newTag,
+      },
+    }));
   }
 
   render() {
