@@ -42,7 +42,7 @@ function getConsentsFromInputs(inputs) {
  * @returns {void}
  */
 function removeNonNecessaryCookies() {
-  const necessaryCookies = window.generoCmp?.NECESSARY_COOKIES || NECESSARY_COOKIES;
+  const necessaryCookies = NECESSARY_COOKIES.concat(window.generoCmp?.necessary_cookies || []);
   for (const cookie of getAllCookies()) {
     const isNecessaryCookie = necessaryCookies.some((necessaryCookie) => {
       const regex = new RegExp(`^${necessaryCookie}`);
@@ -53,6 +53,9 @@ function removeNonNecessaryCookies() {
       removeCookie(cookie)
     }
   }
+
+  localStorage.clear();
+  sessionStorage.clear();
 }
 
 export default function init(modal) {
