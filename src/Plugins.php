@@ -2,6 +2,7 @@
 
 namespace GeneroWP\GeneroCmp;
 
+use GeneroWP\GeneroCmp\Integrations\DuracelltommiGoogleTagManager;
 use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
 use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
 use GeneroWP\GeneroCmp\Integrations\WpConsentApi;
@@ -18,6 +19,7 @@ class Plugins
         new FacebookForWooCommerce($this->settings);
         new TiktokForBusiness($this->settings);
         new WpConsentApi($this->settings);
+        new DuracelltommiGoogleTagManager($this->settings);
 
         add_action('init', function () {
             // CTX Feed
