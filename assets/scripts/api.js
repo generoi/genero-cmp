@@ -115,13 +115,22 @@ function parseConsentString(consentString) {
 /**
  * Update all supported consent modes.
  *
+ * @param {bool} synchronous Set the consent mode in the same thread (default: false)
  * @returns {void}
  */
-export function updateConsentMode() {
-  setTimeout(googleConsentMode, 0);
-  setTimeout(metaConsentMode, 0);
-  setTimeout(tiktokConsentMode, 0);
-  setTimeout(wpConsentMode, 0);
+export function updateConsentMode(synchronous = false) {
+  [
+    googleConsentMode,
+    metaConsentMode,
+    tiktokConsentMode,
+    wpConsentMode,
+  ].forEach((cb) => {
+    if (synchronous) {
+      cb();
+    } else {
+      setTimeout(cb, 0);
+    }
+  });
 }
 
 /**

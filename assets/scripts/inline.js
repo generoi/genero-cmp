@@ -15,6 +15,6 @@ gtag('consent', 'default', {
 
 const hasConsented = Object.keys(getConsentData().consents).length > 0;
 if (hasConsented) {
-  updateConsentMode();
+  updateConsentMode(true);
 }
 
