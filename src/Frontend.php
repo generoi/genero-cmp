@@ -12,7 +12,7 @@ class Frontend
         public string $name,
         public Plugin $plugin,
     ) {
-        $this->settings = apply_filters('gds_cmp_settings', get_option($name));
+        $this->settings = get_option($name);
 
         add_action('wp_head', [$this, 'wpHead'], 9);
         add_action('wp_footer', [$this, 'wpFooter']);
