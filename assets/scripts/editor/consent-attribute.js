@@ -10,11 +10,6 @@ function isBlockSupported(blockType) {
   return hasBlockSupport(blockType, 'customClassName', true);
 }
 
-const DEFAULT_CONSENTS = [
-  { name: 'statistics', label: 'Statistics' },
-  { name: 'marketing', label: 'Marketing' },
-];
-
 function addAttribute(settings) {
   if (isBlockSupported(settings.name)) {
     settings.attributes = {
@@ -58,7 +53,7 @@ const withDataAttributes = createHigherOrderComponent((BlockListBlock) => {
 const withInspectorControl = createHigherOrderComponent((BlockEdit) => {
   return (props) => {
     if (isBlockSupported(props.name) && props.isSelected) {
-      const consentsAvailable = DEFAULT_CONSENTS;
+      const consentsAvailable = window.generoCmp.consents;
 
       return (
         <>
@@ -86,21 +81,21 @@ const withInspectorControl = createHigherOrderComponent((BlockEdit) => {
               </div>
               <div>
                 <ButtonGroup>
-                  { consentsAvailable.map(({name, label}) => {
+                  { consentsAvailable.map(({id, label}) => {
                     const onClick = () => {
                       const consents = props.attributes.consents || [];
 
                       props.setAttributes({
-                        consents: consents.includes(name)
-                          ? consents.filter((consent) => consent !== name)
-                          : consents.concat([name]),
+                        consents: consents.includes(id)
+                          ? consents.filter((consent) => consent !== id)
+                          : consents.concat([id]),
                       });
                     };
 
                     return (
                       <Button
                         isSmall
-                        isPressed={ props.attributes.consents?.includes?.(name) }
+                        isPressed={ props.attributes.consents?.includes?.(id) }
                         onClick={ onClick }
                       >
                         {label}

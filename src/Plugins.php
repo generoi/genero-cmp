@@ -4,6 +4,7 @@ namespace GeneroWP\GeneroCmp;
 
 use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
 use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
+use GeneroWP\GeneroCmp\Integrations\WpConsentApi;
 use Gravity_Forms\Gravity_Forms_Google_Analytics\GF_Google_Analytics;
 
 class Plugins
@@ -16,9 +17,7 @@ class Plugins
 
         new FacebookForWooCommerce($this->settings);
         new TiktokForBusiness($this->settings);
-
-        // wp-consent-api integration
-        add_filter('wp_get_consent_type', fn () => 'optin');
+        new WpConsentApi($this->settings);
 
         add_action('init', function () {
             // CTX Feed

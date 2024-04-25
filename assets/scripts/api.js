@@ -7,6 +7,7 @@ export const COOKIE_NAME = 'gds-consent';
 export const EVENT_CONSENT = 'genero-cmp-accept';
 
 export const NECESSARY_STORAGE_CONSENT = 'necessary';
+export const PREFERENCES_STORAGE_CONSENT = 'preferences';
 export const AD_STORAGE_CONSENT = 'marketing';
 export const ANALYTICS_STORAGE_CONSENT = 'statistics';
 
@@ -24,7 +25,7 @@ export const NECESSARY_COOKIES = [
 ];
 
 /**
- * @typedef {('necessary'|'marketing'|'statistics')} Consent
+ * @typedef {('necessary'|'preferences'|'marketing'|'statistics')} Consent
  */
 
 /**
@@ -140,19 +141,27 @@ export function googleConsentMode() {
   const consentData = getConsentData();
 
   const gtmConsents = {
-    analytics_storage: 'denied',
     ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
   };
 
   // Map custom consent names to GTM consent names.
   for (const [consent, value] of Object.entries(consentData.consents)) {
-    const gtmConsentName = {
-      [ANALYTICS_STORAGE_CONSENT]: 'analytics_storage',
-      [AD_STORAGE_CONSENT]: 'ad_storage'
-    }[consent] || consent;
+    const consentSettings = window.generoCmp?.consents?.find?.((c) => c.id === consent);
+    if (!consentSettings) {
+      continue;
+    }
 
-    gtmConsents[gtmConsentName] = value === true ? 'granted' : 'denied';
+    for (const gtmConsentModeId of consentSettings.gtmConsentModes) {
+      gtmConsents[gtmConsentModeId] = value === true ? 'granted' : 'denied';
+    }
   }
+
   gtag('consent', 'update', gtmConsents);
   gtag('set', {consents: gtmConsents});
 }
@@ -195,11 +204,24 @@ export function tiktokConsentMode() {
   }
 }
 
+/**
+ * Update WP Consent API consent mode.
+ *
+ * @returns {void}
+ */
 export function wpConsentMode() {
   if (!window.wp_set_consent) {
     return;
   }
 
-  window.wp_set_consent('marketing', hasConsent(AD_STORAGE_CONSENT) ? 'allow' : 'deny');
-  window.wp_set_consent('statistics', hasConsent(ANALYTICS_STORAGE_CONSENT) ? 'allow' : 'deny');
+  for (const consent of window.generoCmp.consents) {
+    if (! consent.wpConsentApiCategory) {
+      continue;
+    }
+
+    window.wp_set_consent(
+      consent.wpConsentApiCategory,
+      hasConsent(consent.id) ? 'allow' : 'deny'
+    );
+  }
 }

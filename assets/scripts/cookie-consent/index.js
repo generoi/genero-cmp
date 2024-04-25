@@ -1,4 +1,4 @@
-import { AD_STORAGE_CONSENT, ANALYTICS_STORAGE_CONSENT, COOKIE_NAME, EVENT_CONSENT, NECESSARY_COOKIES, buildConsentString, getConsentData, hasConsent, updateConsentMode } from '../api';
+import { COOKIE_NAME, EVENT_CONSENT, NECESSARY_COOKIES, buildConsentString, getConsentData, hasConsent, updateConsentMode } from '../api';
 import { getCookie, setCookie, removeCookie, getAllCookies } from '../utils';
 import { Consents } from '../api';
 import './index.scss';
@@ -110,16 +110,15 @@ export default function init(modal) {
 
   // Accept selected cookies and close modal
   acceptSelectedEl.addEventListener('click', () => {
-    const hadAdConsent = hasConsent(AD_STORAGE_CONSENT);
-    const hadAnalyticsConsent = hasConsent(ANALYTICS_STORAGE_CONSENT);
+    const previousConsents = getConsentData().consents;
 
     setupConsent();
 
     // If consent was revoked, remove all cookies except necessary ones.
-    const hasRevokedAdConsent = hadAdConsent && !hasConsent(AD_STORAGE_CONSENT);
-    const hasRevokedAnalyticsConsent = hadAnalyticsConsent && !hasConsent(ANALYTICS_STORAGE_CONSENT);
-    if (hasRevokedAdConsent || hasRevokedAnalyticsConsent) {
-      removeNonNecessaryCookies();
+    for (const [consent, value] of Object.entries(previousConsents)) {
+      if (value && !hasConsent(consent)) {
+        removeNonNecessaryCookies();
+      }
     }
   }, {passive: true});
 
@@ -146,6 +145,7 @@ export default function init(modal) {
       modal.hide();
     },
     withdraw() {
+      removeNonNecessaryCookies();
       removeCookie(COOKIE_NAME);
       removeCookie(`${COOKIE_NAME}-hash`);
       modal.show();

@@ -1,7 +1,7 @@
-import { EVENT_CONSENT } from '../api';
+import { EVENT_CONSENT, NECESSARY_STORAGE_CONSENT } from '../api';
 import './index.scss';
 
-const DEFAULT_CONSENT = 'consent-functional';
+const DEFAULT_CONSENT = NECESSARY_STORAGE_CONSENT;
 const DEFAULT_TAG_NAME = 'iframe';
 
 export class CmpEmbed extends HTMLElement {
@@ -16,10 +16,14 @@ export class CmpEmbed extends HTMLElement {
   connectedCallback() {
     this.render();
 
-    if (window.generoCmp?.hasConsent?.(this.consent)) {
+    if (window.generoCmp?.hasConsent && window.generoCmp.hasConsent(...this.consent)) {
       this.onConsentGiven();
     } else {
-      window.addEventListener(`${EVENT_CONSENT}.${this.consent}`, this.onConsentGiven.bind(this));
+      window.addEventListener(EVENT_CONSENT, () => {
+        if (window.generoCmp.hasConsent(...this.consent)) {
+          this.onConsentGiven();
+        }
+      });
     }
   }
 

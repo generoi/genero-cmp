@@ -21,20 +21,20 @@
                             <input
                                 type="checkbox"
                                 name="cookie-consent"
-                                <?php if ($consent['necessary'] ?? false) : ?>
+                                <?php if ($consent->necessary) : ?>
                                     required
                                 <?php endif; ?>
-                                <?php if ($consent['consent'] ?? false) : ?>
+                                <?php if ($consent->consent) : ?>
                                     checked
                                     disabled
                                 <?php endif; ?>
-                                value="<?php echo esc_attr($consent['id']); ?>"
+                                value="<?php echo esc_attr($consent->id); ?>"
                             >
-                            <?php echo esc_html($consent['label']); ?>
+                            <?php echo esc_html($consent->label); ?>
                         </label>
 
                         <i slot="icon" class="fa fa-solid fa-chevron-down"></i>
-                        <p><?php echo esc_html($consent['description']); ?></p>
+                        <p><?php echo esc_html($consent->description); ?></p>
                     </gds-cmp-accordion-item>
                 <?php endforeach; ?>
             </gds-cmp-accordion>

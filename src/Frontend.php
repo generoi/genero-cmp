@@ -2,14 +2,16 @@
 
 namespace GeneroWP\GeneroCmp;
 
+use GeneroWP\GeneroCmp\Models\Consent;
+
 class Frontend
 {
     public $settings;
-    public $name;
 
-    public function __construct($name)
-    {
-        $this->name = $name;
+    public function __construct(
+        public string $name,
+        public Plugin $plugin,
+    ) {
         $this->settings = apply_filters('gds_cmp_settings', get_option($name));
 
         add_action('wp_head', [$this, 'wpHead'], 9);
@@ -395,23 +397,36 @@ class Frontend
         $content = preg_replace_callback(
             '~<(iframe|youtube-embed)(.*?)>(.*?)</(iframe|youtube-embed)>~is',
             function (array $matches) use ($description, $button) {
-                $consent = str_contains($matches[0], 'youtube') ? 'marketing' : 'functional';
-                $consentLabel = match ($consent) {
-                    'marketing' => __('Marketing', 'genero-cmp'),
-                    'functional' => __('Functional', 'genero-cmp'),
-                    'statistics' => __('Statistics', 'genero-cmp'),
+                [$tag, $element, $attributes, $innerContent] = $matches;
+
+                $consents = match (true) {
+                    str_contains($tag, 'youtube') => [Consent::MARKETING],
+                    default => [],
                 };
 
-                // @TODO not yet implemented.
-                if (empty($this->settings['functional_consent']) && $consent === 'functional') {
-                    return $matches[0];
+                $consents = apply_filters('gds_cmp_embed_consents', $consents, $tag);
+                if (! $consents) {
+                    return $tag;
+                }
+
+                if (count($consents) === 1 && $consents[0] === Consent::FUNCTIONAL) {
+                    return $tag;
+                }
+
+                $consentLabels = array_map(
+                    fn (string $consentId) => $this->plugin->getConsentCategory($consentId)?->label,
+                    $consents,
+                );
+                $consentLabels = array_filter($consentLabels);
+                if (! $consentLabels) {
+                    return $tag;
                 }
 
                 return sprintf(
                     '<gds-cmp-embed as="%s" consent="%s" description="%s" button="%s"%s>%s</gds-cmp-embed>',
                     $matches[1],
-                    $consent,
-                    sprintf($description, $consentLabel),
+                    implode(' ', $consents),
+                    sprintf($description, implode(', ', $consentLabels)),
                     $button,
                     $matches[2],
                     $matches[3],
@@ -437,38 +452,10 @@ class Frontend
 
         $settings = [];
         $settings['lang'] = get_locale();
-        $settings['consents'] = [
-            [
-                'id' => 'necessary',
-                'label' => __('Necessary', 'genero-cmp'),
-                'description' => __('These cookies are technically required for our core website to work properly, e.g. security functions or your cookie consent preferences.', 'genero-cmp'),
-                'necessary' => true,
-                'consent' => true,
-            ],
-            [
-                'id' => 'statistics',
-                'label' => __('Statistics', 'genero-cmp'),
-                'description' => __('In order to improve our website going forward, we anonymously collect data for statistical and analytical purposes. With these cookies we can, for instance, monitor the number or duration of visits of specific pages of our website helping us in optimizing user experience.', 'genero-cmp'),
-                'necessary' => false,
-            ],
-            [
-                'id' => 'marketing',
-                'label' => __('Marketing', 'genero-cmp'),
-                'description' => __('These cookies help us in measuring and optimizing our marketing efforts.', 'genero-cmp'),
-                'necessary' => false,
-            ],
-        ];
-
-        $settings['consents'] = apply_filters('gds_cmp_consents', $settings['consents']);
-
-        $hash = $settings['consents'];
-        foreach ($hash as &$item) {
-            unset($item['label']);
-            unset($item['description']);
-        }
+        $settings['consents'] = $this->plugin->consentCategories();
 
         $this->view('consent-dialog.php', [
-            'hash' => md5(json_encode($hash)),
+            'hash' => $this->plugin->consentHash(),
             'settings' => $settings,
         ]);
     }
