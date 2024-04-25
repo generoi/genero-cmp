@@ -14,6 +14,6 @@ class FacebookForWooCommerce
 
     public function defaultRevokeConsent(string $code): string
     {
-        return "fbq('consent', 'revoke');" . $code;
+        return "console.debug('FacebookForWoocommerce consent revoked');fbq('consent', 'revoke');" . $code;
     }
 }
