@@ -41,6 +41,13 @@ ready(() => {
       cookieConsentContainer.show();
     });
   }
+
+  // Attach open click listeners to all elements with data-genero-cmp-show
+  document.addEventListener('click', function (e) {
+    if (e.target.matches('[data-genero-cmp-show]')) {
+      cookieConsentContainer.show();
+    }
+  }, {passive: true});
 });
 
 /**
