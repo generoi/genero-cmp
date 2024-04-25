@@ -4,6 +4,7 @@ import { Consents } from '../api';
 import './index.scss';
 
 /**
+ * @param {HTMLElement} modal Reference to the <gds-cmp-modal-dialog> element
  * @returns {void}
  */
 function runEvent(modal) {
@@ -58,6 +59,10 @@ function removeNonNecessaryCookies() {
   sessionStorage.clear();
 }
 
+/**
+ * @param {HTMLElement} modal Reference to the <gds-cmp-modal-dialog> element
+ * @returns {void}
+ */
 export default function init(modal) {
   const hash = modal.attributes['data-cookie-consent-hash'].value;
   const acceptSelectedEl = modal.querySelector('[data-cookie-consent-accept-selected]');
