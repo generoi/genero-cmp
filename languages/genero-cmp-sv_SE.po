@@ -36,21 +36,50 @@ msgstr ""
 msgid "http://genero.fi/"
 msgstr ""
 
-#: src/Frontend.php:364
+#: src/Frontend.php:394
+msgid "Viewing this embed loads content from a third party and thus requires <em>%s</em> consent."
+msgstr "Denna inbäddning laddas innehåll från en tredje part och kräver därför <em>%s</em> samtycke."
+
+#: src/Frontend.php:395
+msgid "Modify preferences"
+msgstr "Ändra inställningar"
+
+#: src/Integrations/WpConsentApi.php:32
+#: src/Integrations/WpConsentApi.php:41
+msgid "1 year"
+msgstr ""
+
+#: src/Integrations/WpConsentApi.php:33
+msgid "Stores users consent preference"
+msgstr ""
+
+#: src/Integrations/WpConsentApi.php:42
+msgid "Stores a hash of the consent options last time consent was given so that any changes will prompt for a new consent"
+msgstr ""
+
+#: src/Plugin.php:127
 msgid "Necessary"
 msgstr "Nödvändig"
 
-#: src/Frontend.php:365
+#: src/Plugin.php:128
 msgid ""
 "These cookies are technically required for our core website to work "
 "properly, e.g. security functions or your cookie consent preferences."
 msgstr "Dessa cookies hjälper oss att mäta och optimera vår marknadsföring."
 
-#: src/Frontend.php:371
+#: src/Plugin.php:137
+msgid "Preferences"
+msgstr "Inställningar"
+
+#: src/Plugin.php:138
+msgid "Preference cookies enable a website to remember information that changes the way the website behaves or looks, like your preferred language or the region that you are in."
+msgstr "Cookies för inställningar låter en webbplats komma ihåg information som ändrar hur webbplatsen fungerar eller visas. Detta kan t.ex. vara föredraget språk eller regionen du befinner dig i."
+
+#: src/Plugin.php:146
 msgid "Statistics"
 msgstr "Statistik"
 
-#: src/Frontend.php:372
+#: src/Plugin.php:147
 msgid ""
 "In order to improve our website going forward, we anonymously collect data "
 "for statistical and analytical purposes. With these cookies we can, for "
@@ -62,11 +91,11 @@ msgstr ""
 "med hur många besökare sidan har eller hur länge de stannat på sidan. Detta "
 "hjälper oss att skapa en bättre användarupplevelse."
 
-#: src/Frontend.php:377
+#: src/Plugin.php:154
 msgid "Marketing"
 msgstr "Marknadsföring"
 
-#: src/Frontend.php:378
+#: src/Plugin.php:155
 msgid ""
 "These cookies help us in measuring and optimizing our marketing efforts."
 msgstr "Dessa cookies är nödvändiga för att sidan skall fungera korrekt."
