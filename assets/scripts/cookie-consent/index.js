@@ -84,7 +84,7 @@ export default function init(modal) {
 
   // Pre-fill the inputs according to the cookie value
   for (const input of inputs) {
-    input.checked = hasConsent(input.value);
+    input.checked = input.required ? true : hasConsent(input.value);
   }
 
   // Display the modal if the cookie hash doesn't match the current hash
@@ -140,7 +140,6 @@ export default function init(modal) {
 
   return {
     modal,
-    hasConsent,
     show() {
       modal.show();
     },
