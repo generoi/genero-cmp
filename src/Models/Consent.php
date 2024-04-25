@@ -17,8 +17,7 @@ class Consent
         public bool $consent = false,
         public array $gtmConsentModes = [],
         public ?string $wpConsentApiCategory = null,
-    )
-    {
+    ) {
     }
 
     public function hash(): string
