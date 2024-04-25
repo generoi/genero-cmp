@@ -79,9 +79,9 @@ export class CmpEmbed extends HTMLElement {
       <style>
         :host {
           display: block;
+          position: relative;
         }
         .container {
-          position: absolute;
           inset: 0;
           border: 0;
           width: 100%;
@@ -99,7 +99,7 @@ export class CmpEmbed extends HTMLElement {
         }
       </style>
 
-      <div class="container">
+      <div class="container" part="message" slot="message">
         <p>${this.description}</p>
 
         <button>${this.button}</button>

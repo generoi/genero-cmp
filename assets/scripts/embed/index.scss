@@ -2,5 +2,9 @@
 .wp-embed-responsive .wp-block-embed:not(.wp-has-aspect-ratio) gds-cmp-embed {
   position: relative;
   aspect-ratio: 16 / 9;
+
+  &::part(message) {
+    position: absolute;
+  }
 }
 
