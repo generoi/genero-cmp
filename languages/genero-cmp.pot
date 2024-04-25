@@ -1,17 +1,17 @@
-# Copyright (C) 2023 Genero
+# Copyright (C) 2024 Genero
 # This file is distributed under the MIT License.
 msgid ""
 msgstr ""
-"Project-Id-Version: Genero CMP 1.1.0\n"
+"Project-Id-Version: Genero CMP 1.1.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/genero-cmp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-18T10:27:26+00:00\n"
+"POT-Creation-Date: 2024-04-25T15:40:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.7.1\n"
+"X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: genero-cmp\n"
 
 #. Plugin Name of the plugin
@@ -34,46 +34,79 @@ msgstr ""
 msgid "http://genero.fi/"
 msgstr ""
 
-#: src/Frontend.php:364
+#: src/Frontend.php:394
+msgid "Viewing this embed loads content from a third party and thus requires <em>%s</em> consent."
+msgstr ""
+
+#: src/Frontend.php:395
+msgid "Modify preferences"
+msgstr ""
+
+#: src/Integrations/WpConsentApi.php:32
+#: src/Integrations/WpConsentApi.php:41
+msgid "1 year"
+msgstr ""
+
+#: src/Integrations/WpConsentApi.php:33
+msgid "Stores users consent preference"
+msgstr ""
+
+#: src/Integrations/WpConsentApi.php:42
+msgid "Stores a hash of the consent options last time consent was given so that any changes will prompt for a new consent"
+msgstr ""
+
+#: src/Plugin.php:127
 msgid "Necessary"
 msgstr ""
 
-#: src/Frontend.php:365
+#: src/Plugin.php:128
 msgid "These cookies are technically required for our core website to work properly, e.g. security functions or your cookie consent preferences."
 msgstr ""
 
-#: src/Frontend.php:371
+#: src/Plugin.php:137
+msgid "Preferences"
+msgstr ""
+
+#: src/Plugin.php:138
+msgid "Preference cookies enable a website to remember information that changes the way the website behaves or looks, like your preferred language or the region that you are in."
+msgstr ""
+
+#: src/Plugin.php:146
 msgid "Statistics"
 msgstr ""
 
-#: src/Frontend.php:372
+#: src/Plugin.php:147
 msgid "In order to improve our website going forward, we anonymously collect data for statistical and analytical purposes. With these cookies we can, for instance, monitor the number or duration of visits of specific pages of our website helping us in optimizing user experience."
 msgstr ""
 
-#: src/Frontend.php:377
+#: src/Plugin.php:154
 msgid "Marketing"
 msgstr ""
 
-#: src/Frontend.php:378
+#: src/Plugin.php:155
 msgid "These cookies help us in measuring and optimizing our marketing efforts."
 msgstr ""
 
-#: src/Frontend.php:397
+#: templates/consent-dialog.php:10
 msgid "Cookie Preferences"
 msgstr ""
 
-#: src/Frontend.php:399
+#: templates/consent-dialog.php:12
 msgid "We use cookies to provide a better user experience and personalised service. By consenting to the use of cookies, we can develop an even better service and will be able to provide content that is interesting to you. You are in control of your cookie preferences, and you may change them at any time. Read more about our cookies."
 msgstr ""
 
-#: src/Frontend.php:433
+#: templates/consent-dialog.php:48
 msgid "Accept selected cookies"
 msgstr ""
 
-#: src/Frontend.php:441
+#: templates/consent-dialog.php:56
 msgid "Edit cookie settings"
 msgstr ""
 
-#: src/Frontend.php:448
+#: templates/consent-dialog.php:63
+msgid "Decline all"
+msgstr ""
+
+#: templates/consent-dialog.php:70
 msgid "Accept all cookies"
 msgstr ""

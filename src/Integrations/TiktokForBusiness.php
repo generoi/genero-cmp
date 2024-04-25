@@ -2,6 +2,8 @@
 
 namespace GeneroWP\GeneroCmp\Integrations;
 
+use GeneroWP\GeneroCmp\Models\Consent;
+
 /**
  * https://ads.tiktok.com/help/article/using-cookies-with-tiktok-pixel?lang=en
  */
@@ -17,7 +19,7 @@ class TiktokForBusiness
         $scriptId = $attributes['id'] ?? null;
         if ($scriptId === 'tiktok-pixel-tracking-handle-header-js-after') {
             $attributes['type'] = 'text/plain';
-            $attributes['data-cmp-consent'] = 'statistics marketing';
+            $attributes['data-cmp-consent'] = implode(' ', [Consent::STATISTICS, Consent::MARKETING]);
         }
         return $attributes;
     }

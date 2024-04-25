@@ -8,6 +8,7 @@ gds-cmp-modal-dialog {
   &::part(dialog) {
     box-sizing: border-box;
     max-width: 680px;
+    max-width: fit-content;
     padding:
       #{sloped-size(24px, 60px)}
       #{sloped-size(12px, 60px)};
@@ -33,6 +34,11 @@ gds-cmp-modal-dialog {
   > * {
     margin-block-start: var(--block-gutter-start, var(--block-gutter));
     margin-block-end: var(--block-gutter-end, var(--block-gutter));
+  }
+
+  p {
+    min-width: 100%;
+    width: min-content;
   }
 }
 

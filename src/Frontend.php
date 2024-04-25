@@ -2,15 +2,17 @@
 
 namespace GeneroWP\GeneroCmp;
 
+use GeneroWP\GeneroCmp\Models\Consent;
+
 class Frontend
 {
     public $settings;
-    public $name;
 
-    public function __construct($name)
-    {
-        $this->name = $name;
-        $this->settings = apply_filters('gds_cmp_settings', get_option($name));
+    public function __construct(
+        public string $name,
+        public Plugin $plugin,
+    ) {
+        $this->settings = get_option($name);
 
         add_action('wp_head', [$this, 'wpHead'], 9);
         add_action('wp_footer', [$this, 'wpFooter']);
@@ -18,6 +20,10 @@ class Frontend
         add_action('init', [$this, 'removeCookies']);
         add_action('wp_body_open', [$this, 'consentManager']);
         add_filter('wp_resource_hints', [$this, 'addPreconnectHint'], 10, 2);
+
+        if (!empty($this->settings['embeds_require_consent'])) {
+            add_filter('the_content', [$this, 'blockEmbeds'], 1000);
+        }
 
         if (!empty($this->settings['event_user_logged_in'])) {
             add_action('wp_login', [$this, 'setLoginCookie']);
@@ -383,6 +389,55 @@ class Frontend
         }
     }
 
+    public function blockEmbeds(string $content): string
+    {
+        $description = __('Viewing this embed loads content from a third party and thus requires <em>%s</em> consent.', 'genero-cmp');
+        $button = __('Modify preferences', 'genero-cmp');
+
+        $content = preg_replace_callback(
+            '~<(iframe|youtube-embed)(.*?)>(.*?)</(iframe|youtube-embed)>~is',
+            function (array $matches) use ($description, $button) {
+                [$tag, $element, $attributes, $innerContent] = $matches;
+
+                $consents = match (true) {
+                    str_contains($tag, 'youtube') => [Consent::MARKETING],
+                    default => [],
+                };
+
+                $consents = apply_filters('gds_cmp_embed_consents', $consents, $tag);
+                if (! $consents) {
+                    return $tag;
+                }
+
+                if (count($consents) === 1 && $consents[0] === Consent::NECESSARY) {
+                    return $tag;
+                }
+
+                $consentLabels = array_map(
+                    fn (string $consentId) => $this->plugin->getConsentCategory($consentId)?->label,
+                    $consents,
+                );
+                $consentLabels = array_filter($consentLabels);
+                if (! $consentLabels) {
+                    return $tag;
+                }
+
+                return sprintf(
+                    '<gds-cmp-embed as="%s" consent="%s" description="%s" button="%s"%s>%s</gds-cmp-embed>',
+                    $matches[1],
+                    implode(' ', $consents),
+                    sprintf($description, implode(', ', $consentLabels)),
+                    $button,
+                    $matches[2],
+                    $matches[3],
+                );
+            },
+            $content,
+        );
+
+        return $content;
+    }
+
     public function consentManager()
     {
         // if no tag manager id is set, do nothing
@@ -397,104 +452,18 @@ class Frontend
 
         $settings = [];
         $settings['lang'] = get_locale();
-        $settings['consents'] = [
-            [
-                'id' => 'consent-necessary',
-                'label' => __('Necessary', 'genero-cmp'),
-                'description' => __('These cookies are technically required for our core website to work properly, e.g. security functions or your cookie consent preferences.', 'genero-cmp'),
-                'necessary' => true,
-                'consent' => true,
-            ],
-            [
-                'id' => 'consent-statistics',
-                'label' => __('Statistics', 'genero-cmp'),
-                'description' => __('In order to improve our website going forward, we anonymously collect data for statistical and analytical purposes. With these cookies we can, for instance, monitor the number or duration of visits of specific pages of our website helping us in optimizing user experience.', 'genero-cmp'),
-                'necessary' => false,
-            ],
-            [
-                'id' => 'consent-marketing',
-                'label' => __('Marketing', 'genero-cmp'),
-                'description' => __('These cookies help us in measuring and optimizing our marketing efforts.', 'genero-cmp'),
-                'necessary' => false,
-            ],
-        ];
+        $settings['consents'] = $this->plugin->consentCategories();
 
-        $settings['consents'] = apply_filters('gds_cmp_consents', $settings['consents']);
+        $this->view('consent-dialog.php', [
+            'hash' => $this->plugin->consentHash(),
+            'settings' => $settings,
+        ]);
+    }
 
-        $hash = $settings['consents'];
-        foreach ($hash as &$item) {
-            unset($item['label']);
-            unset($item['description']);
+    protected function view(string $view, array $args = []): void
+    {
+        if (! get_template_part('genero-cmp/' . $view, null, $args)) {
+            load_template(dirname(__DIR__) . "/templates/$view", true, $args);
         }
-        $hash = md5(json_encode($hash));
-
-        $configs = esc_html(wp_json_encode($settings));
-        $body = '
-            <gds-cmp-modal-dialog
-                class="cookie-consent"
-                aria-labelledby="cc-heading"
-                aria-describedby="cc-description"
-                persistent
-                scroll-lock
-                data-cookie-consent-hash="' . $hash . '"
-                data-configs="' . $configs . '"
-                >
-                <h2 id="cc-heading">' . __('Cookie Preferences', 'genero-cmp') . '</h2>
-                <p id="cc-description">
-                ' . __('We use cookies to provide a better user experience and personalised service. By consenting to the use of cookies, we can develop an even better service and will be able to provide content that is interesting to you. You are in control of your cookie preferences, and you may change them at any time. Read more about our cookies.', 'genero-cmp') . '
-                </p>
-            ';
-
-        if (count($settings['consents']) > 0) {
-            $body .= '
-                <div id="cookie-settings" class="cookie-consent__cookies">
-
-                <gds-cmp-accordion>
-                ';
-            foreach ($settings['consents'] as $consent) {
-                $body .= '
-                    <gds-cmp-accordion-item>
-                        <label slot="label">
-                            <input type="checkbox" name="cookie-consent" ' . (($consent['necessary']) ? 'required' : '') . ' ' . ((@$consent['consent']) ? 'checked disabled' : '') . ' value="' . $consent['id'] . '">
-                            ' . $consent['label'] . '
-                        </label>
-                        <i slot="icon" class="fa fa-solid fa-chevron-down"></i>
-
-                        <p>' . $consent['description'] . '</p>
-                    </gds-cmp-accordion-item>
-                    ';
-            }
-                    $body .= '
-                </gds-cmp-accordion>
-                </div>
-        ';
-        }
-        $body .= '
-            <div class="wp-block-buttons cookie-consent__buttons">
-            <div class="wp-block-button is-style-outline" id="accept-selected-button">
-                <button
-                data-cookie-consent-accept-selected
-                class="wp-block-button__link"
-                >' . __('Accept selected cookies', 'genero-cmp') . '</toggle-button>
-            </div>
-
-            <div class="wp-block-button is-style-outline">
-                <gds-cmp-toggle-button
-                persistent
-                aria-controls="cookie-settings accept-selected-button"
-                class="wp-block-button__link"
-                >' . __('Edit cookie settings', 'genero-cmp') . '</gds-cmp-toggle-button>
-            </div>
-
-            <div class="wp-block-button">
-                <button
-                data-cookie-consent-accept-all
-                class="wp-block-button__link"
-                >' . __('Accept all cookies', 'genero-cmp') . '</button>
-            </div>
-            </div>
-        </gds-cmp-modal-dialog>';
-
-        echo $body;
     }
 }
