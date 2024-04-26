@@ -65,6 +65,10 @@ export class CmpEmbed extends HTMLElement {
       newTag.setAttribute(attribute, this.getAttribute(attribute));
     }
     newTag.innerHTML = this.innerHTML;
+    newTag.removeAttribute('description');
+    newTag.removeAttribute('button');
+    newTag.removeAttribute('as');
+    newTag.removeAttribute('consent');
 
     this.replaceWith(newTag);
     this.dispatchEvent(new CustomEvent(EVENT_REPLACED, {
