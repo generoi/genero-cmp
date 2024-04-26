@@ -4,7 +4,7 @@ import { getCookie, gtag, isObject } from './utils';
  * Cookie format: {consents: {'necessary': true, 'analytics': true, 'marketing': false}, version: 1}
  */
 export const COOKIE_NAME = 'gds-consent';
-export const EVENT_CONSENT = 'genero-cmp-accept';
+export const EVENT_CONSENT = 'gds-cmp.consent';
 
 export const NECESSARY_STORAGE_CONSENT = 'necessary';
 export const PREFERENCES_STORAGE_CONSENT = 'preferences';
@@ -153,7 +153,7 @@ export function googleConsentMode() {
 
   // Map custom consent names to GTM consent names.
   for (const [consent, value] of Object.entries(consentData.consents)) {
-    const consentSettings = window.generoCmp?.consents?.find?.((c) => c.id === consent);
+    const consentSettings = window.gdsCmp?.consents?.find?.((c) => c.id === consent);
     if (!consentSettings) {
       continue;
     }
@@ -215,7 +215,7 @@ export function wpConsentMode() {
     return;
   }
 
-  for (const consent of window.generoCmp.consents) {
+  for (const consent of window.gdsCmp.consents) {
     if (! consent.wpConsentApiCategory) {
       continue;
     }

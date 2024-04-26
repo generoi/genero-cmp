@@ -20,44 +20,45 @@ function ready(fn) {
 }
 
 ready(() => {
-  // Initialize the cookie consent banenr and expose window.generoCmp object.
+  // Initialize the cookie consent banenr and expose window.gdsCmp object.
   const cookieConsentContainer = document.querySelector('.cookie-consent');
   if (cookieConsentContainer) {
-    window.generoCmp = {
-      ...(window.generoCmp || {}),
+    window.gdsCmp = {
+      ...(window.gdsCmp || {}),
       hasConsent,
       evaluateTags,
     };
-    window.generoCmp = {
-      ...window.generoCmp,
+    window.gdsCmp = {
+      ...window.gdsCmp,
       ...cookieConsent(cookieConsentContainer),
     };
   }
 
-  // Attach open click listeners to all links with selector `.js-show-cookieconsent`
-  for (const link of document.querySelectorAll('.js-show-cookieconsent')) {
+  // Attach open click listeners to all links with selector `.js-gds-cmp-show`
+  for (const link of document.querySelectorAll('.js-gds-cmp-show')) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
       cookieConsentContainer.show();
     });
   }
 
-  // Attach open click listeners to all elements with data-genero-cmp-show
-  document.addEventListener('click', function (e) {
-    if (e.target.matches('[data-genero-cmp-show]')) {
-      cookieConsentContainer.show();
+  // Attach open click listeners to all elements with data-gds-cmp-trigger="show|hide|withdraw"
+  document.addEventListener('click', function ({target}) {
+    if (target.matches('[data-gds-cmp-trigger]')) {
+      const trigger = target.dataset.gdsCmpTrigger;
+      cookieConsentContainer[trigger]?.();
     }
   }, {passive: true});
 });
 
 /**
- * Evaluate and initialize all script tags using data-cmp-consent="" string
+ * Evaluate and initialize all script tags using data-gds-cmp-consent="" string
  *
  * @param {Node} context
  * @returns void
  */
 function evaluateTags(context = document) {
-  for (const el of context.querySelectorAll(`[data-cmp-consent]`)) {
+  for (const el of context.querySelectorAll(`[data-gds-cmp-consent]`)) {
     const domConsents = el.dataset.cmpConsent.split(' ').sort();
 
     if (!hasConsent(...domConsents)) {
@@ -68,31 +69,31 @@ function evaluateTags(context = document) {
       case 'SCRIPT':
         const newTag = el.cloneNode(true);
         newTag.type = 'text/javascript';
-        delete newTag.dataset.cmpConsent;
+        delete newTag.dataset.gdsCmpConsent;
         el.replaceWith(newTag);
         break;
       case 'IMG':
       case 'VIDEO':
       case 'IFRAME':
-        if (el.dataset.cmpSrc) {
-          el.src = el.dataset.cmpSrc;
-          delete el.dataset.cmpSrc;
-          delete el.dataset.cmpConsent;
+        if (el.dataset.gdsCmpSrc) {
+          el.src = el.dataset.gdsCmpSrc;
+          delete el.dataset.gdsCmpSrc;
+          delete el.dataset.gdsCmpConsent;
         }
         break;
     }
   }
 }
 
-// Add support for data-cmp-consent="marketing analytics necessary" attributes on script, img, video and
+// Add support for data-gds-cmp-consent="marketing analytics necessary" attributes on script, img, video and
 // iframe elements.
 window.addEventListener(EVENT_CONSENT, () => evaluateTags());
 
-// Add has-genero-cmp-consent--{'marketing'|'analytics'|'necessary'} classes to the body element
+// Add has-gds-cmp-consent--{'marketing'|'analytics'|'necessary'} classes to the body element
 window.addEventListener(EVENT_CONSENT, () => {
   const consentData = getConsentData();
 
   for (const [consent, value] of Object.entries(consentData.consents)) {
-    document.body.classList.toggle(`has-genero-cmp-consent--${consent}`, value);
+    document.body.classList.toggle(`has-gds-cmp-consent--${consent}`, value);
   }
 });

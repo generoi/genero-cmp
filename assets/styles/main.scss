@@ -4,25 +4,26 @@ gds-cmp-modal-dialog {
 
 $consents: (
   'necessary',
-  'marketing',
+  'preferences',
   'statistics',
+  'marketing',
 );
 
 @each $consent in $consents {
   // For optin we hide it if any of the consents are missing on body
-  body:not(.has-genero-cmp-consent--#{$consent}) [data-consent-optin*="#{$consent}"] {
+  body:not(.has-gds-cmp-consent--#{$consent}) [data-consent-optin*="#{$consent}"] {
     display: none !important;
   }
 
   // For optout we need make sure all consents are given
   // First hide elements with only one consent requirement
-  body.has-genero-cmp-consent--#{$consent} [data-consent-optout="#{$consent}"] {
+  body.has-gds-cmp-consent--#{$consent} [data-consent-optout="#{$consent}"] {
     display: none !important;
   }
 
   @each $consent2 in $consents {
     @if ($consent != $consent2) {
-      body.has-genero-cmp-consent--#{$consent}.has-genero-cmp-consent--#{$consent2} [data-consent-optout*="#{$consent}"][data-consent-optout*="#{$consent2}"] {
+      body.has-gds-cmp-consent--#{$consent}.has-gds-cmp-consent--#{$consent2} [data-consent-optout*="#{$consent}"][data-consent-optout*="#{$consent2}"] {
         display: none !important;
       }
     }

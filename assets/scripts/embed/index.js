@@ -1,7 +1,7 @@
 import { EVENT_CONSENT, NECESSARY_STORAGE_CONSENT } from '../api';
 import './index.scss';
 
-const EVENT_VISIBLE = 'cmp-embed.visible';
+const EVENT_REPLACED = 'gds-cmp-embed.replaced';
 const DEFAULT_CONSENT = NECESSARY_STORAGE_CONSENT;
 const DEFAULT_TAG_NAME = 'iframe';
 
@@ -17,11 +17,11 @@ export class CmpEmbed extends HTMLElement {
   connectedCallback() {
     this.render();
 
-    if (window.generoCmp?.hasConsent && window.generoCmp.hasConsent(...this.consent)) {
+    if (window.gdsCmp?.hasConsent && window.gdsCmp.hasConsent(...this.consent)) {
       this.onConsentGiven();
     } else {
       window.addEventListener(EVENT_CONSENT, () => {
-        if (window.generoCmp.hasConsent(...this.consent)) {
+        if (window.gdsCmp.hasConsent(...this.consent)) {
           this.onConsentGiven();
         }
       });
@@ -67,7 +67,7 @@ export class CmpEmbed extends HTMLElement {
     newTag.innerHTML = this.innerHTML;
 
     this.replaceWith(newTag);
-    this.dispatchEvent(new CustomEvent(EVENT_VISIBLE, {
+    this.dispatchEvent(new CustomEvent(EVENT_REPLACED, {
       detail: {
         element: newTag,
       },
@@ -111,7 +111,7 @@ export class CmpEmbed extends HTMLElement {
     `;
 
     this.#buttonEl = this.shadowRoot.querySelector('.container button');
-    this.#buttonEl.addEventListener('click', () => window.generoCmp?.show?.());
+    this.#buttonEl.addEventListener('click', () => window.gdsCmp?.show?.());
   }
 }
 

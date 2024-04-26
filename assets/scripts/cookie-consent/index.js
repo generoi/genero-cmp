@@ -4,23 +4,11 @@ import { Consents } from '../api';
 import './index.scss';
 
 /**
- * @param {HTMLElement} modal Reference to the <gds-cmp-modal-dialog> element
  * @returns {void}
  */
-function runEvent(modal) {
-  const settings = JSON.parse(modal.attributes['data-configs'].value);
-  const consentData = getConsentData();
-
-  const event = new CustomEvent(EVENT_CONSENT, {
-    detail: {
-      message: 'Cookies have been accepted',
-      settings,
-      consentData,
-    }
-  });
-  window.dispatchEvent(event);
-
-  for (const [consent, value] of Object.entries(consentData.consents)) {
+function runEvent() {
+  window.dispatchEvent(new CustomEvent(EVENT_CONSENT));
+  for (const [consent, value] of Object.entries(getConsentData().consents)) {
     if (value) {
       window.dispatchEvent(new CustomEvent(`${EVENT_CONSENT}.${consent}`));
     }
@@ -43,7 +31,7 @@ function getConsentsFromInputs(inputs) {
  * @returns {void}
  */
 function removeNonNecessaryCookies() {
-  const necessaryCookies = NECESSARY_COOKIES.concat(window.generoCmp?.necessary_cookies || []);
+  const necessaryCookies = NECESSARY_COOKIES.concat(window.gdsCmp?.necessary_cookies || []);
   for (const cookie of getAllCookies()) {
     const isNecessaryCookie = necessaryCookies.some((necessaryCookie) => {
       const regex = new RegExp(`^${necessaryCookie}`);
@@ -101,7 +89,7 @@ export default function init(modal) {
 
   // run event if cookie is set
   if (hasConsented || consentHash) {
-    runEvent(modal);
+    runEvent();
   }
 
   function setupConsent() {
@@ -111,7 +99,7 @@ export default function init(modal) {
     );
     setCookie(COOKIE_NAME, consentString);
     setCookie(`${COOKIE_NAME}-hash`, hash);
-    runEvent(modal);
+    runEvent();
     updateConsentMode();
     requestAnimationFrame(() => modal.hide());
   }

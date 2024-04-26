@@ -83,7 +83,7 @@ class Plugin
             'before'
         );
 
-        wp_localize_script("{$this->name}/js", 'generoCmp', [
+        wp_localize_script("{$this->name}/js", 'gdsCmp', [
             'consents' => $this->consentCategories(),
             'necessary_cookies' => $this->necessaryCookies(),
         ]);
@@ -106,7 +106,7 @@ class Plugin
                 $manifest['dependencies'],
                 filemtime($this->path . '/dist/editor.js')
             );
-            wp_localize_script("{$this->name}/editor.js", 'generoCmp', [
+            wp_localize_script("{$this->name}/editor.js", 'gdsCmp', [
                 'consents' => $this->consentCategories(),
             ]);
         }

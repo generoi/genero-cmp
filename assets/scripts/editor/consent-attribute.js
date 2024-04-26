@@ -41,7 +41,7 @@ const withDataAttributes = createHigherOrderComponent((BlockListBlock) => {
       let wrapperProps = props.wrapperProps;
       wrapperProps = {
         ...wrapperProps,
-        [`data-consent-${mode}`]: attributes.consents.join(' '),
+        [`data-gds-cmp-consent-${mode}`]: attributes.consents.join(' '),
       };
 
       return <BlockListBlock { ...props } wrapperProps={ wrapperProps } />;
@@ -53,7 +53,7 @@ const withDataAttributes = createHigherOrderComponent((BlockListBlock) => {
 const withInspectorControl = createHigherOrderComponent((BlockEdit) => {
   return (props) => {
     if (isBlockSupported(props.name) && props.isSelected) {
-      const consentsAvailable = window.generoCmp.consents;
+      const consentsAvailable = window.gdsCmp.consents;
 
       return (
         <>
@@ -116,7 +116,7 @@ const withInspectorControl = createHigherOrderComponent((BlockEdit) => {
 function addSaveProps(extraProps, blockType, attributes) {
   if (isBlockSupported(blockType) && attributes.consents.length) {
       const mode = attributes?.consentOptin ? 'optin' : 'optout';
-      extraProps[`data-consent-${mode}`] = attributes.consents.join(' ');
+      extraProps[`data-gds-cmp-consent-${mode}`] = attributes.consents.join(' ');
   }
 
   return extraProps;

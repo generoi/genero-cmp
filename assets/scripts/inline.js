@@ -15,6 +15,8 @@ gtag('consent', 'default', {
 
 const hasConsented = Object.keys(getConsentData().consents).length > 0;
 if (hasConsented) {
+  // We need to run this in the same thread or else Consent Initialization event
+  // happens before and tags never fire.
   updateConsentMode(true);
 }
 

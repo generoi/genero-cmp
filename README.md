@@ -72,28 +72,28 @@ add_filter('gds_cmp_embed_consents', function (array $consents, string $tag) {
  * @param {HTMLElement} modal Reference to the <gds-cmp-modal-dialog> element
  * @returns {void}
  */
-window.generoCmp.modal
+window.gdsCmp.modal
 
 /**
  * Show the consent dialog
  *
  * @returns {void}
  */
-window.generoCmp.show()
+window.gdsCmp.show()
 
 /**
  * Hide the consent dialog
  *
  * @returns {void}
  */
-window.generoCmp.hide()
+window.gdsCmp.hide()
 
 /**
  * Withdraw current consent.
  *
  * @returns {void}
  */
-window.generoCmp.withdraw()
+window.gdsCmp.withdraw()
 
 /**
  * Return if user has granted the passed consents.
@@ -101,7 +101,7 @@ window.generoCmp.withdraw()
  * @param {...Consent} consents Consent name eg. 'necessary`, `preferences`, `marketing`, `statistics`.
  * @returns {boolean} if user has granted all the consents
  */
-window.generoCmp.hasConsent(...consents)
+window.gdsCmp.hasConsent(...consents)
 
 /**
  * Evaluate and initialize all script tags using data-cmp-consent="" string
@@ -109,7 +109,21 @@ window.generoCmp.hasConsent(...consents)
  * @param {Node} context
  * @returns void
  */
-window.generoCmp.evaluateTags(context = document)
+window.gdsCmp.evaluateTags(context = document)
+```
+
+### Events
+
+```js
+window.addEventListener('gds-cmp.consent', () => {
+  if (window.gdsCmp.hasConsent('marketing')) {
+    // ....
+  }
+});
+
+window.addEventListener('gds-cmp.consent.marketing', () => {
+  // ...
+});
 ```
 
 ## Utilities
@@ -117,50 +131,45 @@ window.generoCmp.evaluateTags(context = document)
 ### Hide content using CSS
 
 ```html
-<div data-consent-optin="necessary marketing">
+<div data-gds-cmp-consent-optin="necessary marketing">
   Show when consent is given for necessary and marketing cookies.
 </div>
-<div data-consent-optout="necessary marketing">
+<div data-gds-cmp-consent-optout="necessary marketing">
   Hide when consent is given for necessary and marketing cookies.
 </div>
 ```
 
-### Display cookie consent dialog
+### Control cookie consent dialog
 
-Add `.js-show-cookieconsent` selector to any element (runs on `DOMContentLoaded`)
+Add `.js-gds-cmp-show` class to any element (needs to be in DOM before DOMDocumentReady).
 
 ```html
-<button class="js-show-cookieconsent">Change consent</button>
+<a class="js-gds-cmp-show">Change consent</a>
 ```
 
+Add `[data-gds-cmp-trigger="show|hide|withdraw"]` selector to any element (delegates as a document click listener)
 
-Add `[data-genero-cmp-show]` selector to any element (delegates as a document click listener)
-
-```js
-if (window.generoCmp && !window.generoCmp.hasConsent('preferences')) {
-  noticeMessage = __('You need to accept "preferences" cookies to use this feature.');
-  noticeMessage = `<p>${noticeMessage}</p><button class="button" data-genero-cmp-show>${__('Adjust settings')}</button>`;
-  showNotice(noticeMessage, 'error');
-}
+```html
+<button data-gds-cmp-trigger="show">Change consent</button>
 ```
 
-- Run manually with `window.generoCmp.show()`
+- Run manually with `window.gdsCmp.show()`
 - Run `show()` on the `<gds-cmp-modal-dialog>` element
 
-### Block elements from being loaded using `[data-cmp-consent]` attribute
+### Block elements from being loaded using `[data-gds-cmp-consent]` attribute
 
-You can add `data-cmp-consent="marketing preferences"` to an element and once consent has been given, the element will evaluate.
+You can add `data-gds-cmp-consent="marketing preferences"` to an element and once consent has been given, the element will evaluate.
 
 Supported elements are `<script>`, `<img>`, `<video>` and `<iframe>`.
 
 This is useful if content is entirely opt-in and doesnt require prompting the user for consent.
 
 ```html
-<script src="..." type="text/plain" data-cmp-consnet="marketing statistics"></script>
+<script src="..." type="text/plain" data-gds-cmp-consent="marketing statistics"></script>
 
-<iframe data-cmp-src="..." data-cmp-consent="marketing"></iframe>
-<img data-cmp-src="..." data-cmp-consent="marketing" />
-<video data-cmp-src="..." data-cmp-consent="marketing"></video>
+<iframe data-gds-cmp-src="..." data-gds-cmp-consent="marketing"></iframe>
+<img data-gds-cmp-src="..." data-gds-cmp-consent="marketing" />
+<video data-gds-cmp-src="..." data-gds-cmp-consent="marketing"></video>
 ```
 
 ### Block elements with a message using `<gds-cmp-embed>`
@@ -192,12 +201,12 @@ You can also use `as=""` attribute to replace eg an `<iframe>`.
 </gds-cmp-embed>
 ```
 
-If you need to run JS once the embed replace has taken place, you can listen for the `cmp-embed.visible` event.
+If you need to run JS once the embed replace has taken place, you can listen for the `gds-cmp-embed.replaced` event.
 
 ```js
 function init(el) {
   if (el.tagName === 'GDS-CMP-EMBED') {
-    el.addEventListener('cmp-embed.visible', (e) => init(e.detail.element));
+    el.addEventListener('gds-cmp-embed.replaced', (e) => init(e.detail.element));
     return;
   }
   // ... do stuff

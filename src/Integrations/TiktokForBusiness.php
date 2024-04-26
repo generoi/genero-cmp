@@ -21,7 +21,7 @@ class TiktokForBusiness
         $scriptId = $attributes['id'] ?? null;
         if ($scriptId === 'tiktok-pixel-tracking-handle-header-js-after') {
             $attributes['type'] = 'text/plain';
-            $attributes['data-cmp-consent'] = implode(' ', [Consent::STATISTICS, Consent::MARKETING]);
+            $attributes['data-gds-cmp-consent'] = implode(' ', [Consent::STATISTICS, Consent::MARKETING]);
         }
         return $attributes;
     }
