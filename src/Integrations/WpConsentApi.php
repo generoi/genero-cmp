@@ -2,16 +2,20 @@
 
 namespace GeneroWP\GeneroCmp\Integrations;
 
+use GeneroWP\GeneroCmp\Plugin;
+
 /**
  * @see https://github.com/Really-Simple-Plugins/wp-consent-level-api
  */
 class WpConsentApi
 {
-    public function __construct(array $settings)
-    {
+    public function __construct(
+        protected Plugin $plugin,
+    ) {
+        $this->addCookieInfo();
+
         add_filter('wp_get_consent_type', fn () => 'optin');
         add_filter('wp_consent_categories', [$this, 'filterCategories']);
-        add_action('plugins_loaded', [$this, 'addCookieInfo']);
     }
 
     public function filterCategories(array $categories): array

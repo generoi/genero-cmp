@@ -7,8 +7,10 @@ class Admin
     public $settings_title;
     public $text_domain;
 
-    public function __construct($name)
-    {
+    public function __construct(
+        public string $name,
+        public Plugin $plugin,
+    ) {
         $this->settings_title = $name;
         $this->text_domain = $name;
 

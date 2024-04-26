@@ -3,18 +3,20 @@
 namespace GeneroWP\GeneroCmp\Integrations;
 
 use GeneroWP\GeneroCmp\Models\Consent;
+use GeneroWP\GeneroCmp\Plugin;
 
 /**
  * https://ads.tiktok.com/help/article/using-cookies-with-tiktok-pixel?lang=en
  */
 class TiktokForBusiness
 {
-    public function __construct(array $settings)
-    {
-        add_filter('wp_inline_script_attributes', [$this, 'addScriptAttribute'], 10, 2);
+    public function __construct(
+        protected Plugin $plugin,
+    ) {
+        add_filter('wp_inline_script_attributes', [$this, 'addScriptAttribute']);
     }
 
-    public function addScriptAttribute(array $attributes, $script): array
+    public function addScriptAttribute(array $attributes): array
     {
         $scriptId = $attributes['id'] ?? null;
         if ($scriptId === 'tiktok-pixel-tracking-handle-header-js-after') {

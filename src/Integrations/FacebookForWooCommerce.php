@@ -2,13 +2,16 @@
 
 namespace GeneroWP\GeneroCmp\Integrations;
 
+use GeneroWP\GeneroCmp\Plugin;
+
 /**
  * @see https://www.cookieyes.com/documentation/features/integrations/facebook-pixel-consent-mode/
  */
 class FacebookForWooCommerce
 {
-    public function __construct(array $settings)
-    {
+    public function __construct(
+        protected Plugin $plugin,
+    ) {
         add_filter('facebook_woocommerce_pixel_init', [$this, 'defaultRevokeConsent']);
     }
 

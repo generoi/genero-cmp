@@ -2,8 +2,13 @@
 
 CMP Plugin
 
-## Third Party integrations
+## Features
 
+- YouTube block use `youtube-noockie.com` domain instead
+- YouTube and Google Maps iframes require marketing and statistics consent before shown.
+- [Event Tracking for Gravity Forms](https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/) container code is removed.
+- [Gravity Forms Analytics](https://www.gravityforms.com/add-ons/google-analytics/) analytics tag is removed.
+- [CTX Feed](https://wordpress.org/plugins/webappick-product-feed-for-woocommerce/) pixel is removed.
 - [WP Consent API](https://wordpress.org/plugins/wp-consent-api/) integration (required for GDPR compliant WooCommerce).
 - [TikTok for Business](https://wordpress.org/plugins/tiktok-for-business/) pixel is removed until marketing consent has been given
 - [Facebook for WooCommerce](https://wordpress.org/plugins/facebook-for-woocommerce/) pixel gets `fbq('consent', 'revoke');` when initialized

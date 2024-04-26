@@ -2,14 +2,22 @@
 
 namespace GeneroWP\GeneroCmp;
 
+use GeneroWP\GeneroCmp\Integrations\CtxFeed;
+use GeneroWP\GeneroCmp\Integrations\DataLayer;
+use GeneroWP\GeneroCmp\Integrations\DuracelltommiGoogleTagManager;
+use GeneroWP\GeneroCmp\Integrations\Embeds;
+use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
+use GeneroWP\GeneroCmp\Integrations\Gravityforms;
+use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
+use GeneroWP\GeneroCmp\Integrations\WpConsentApi;
 use GeneroWP\GeneroCmp\Models\Consent;
 
 class Plugin
 {
-    public $name = 'genero-cmp';
-    public $file;
-    public $path;
-    public $url;
+    public string $name = 'genero-cmp';
+    public string $file;
+    public string $path;
+    public string $url;
 
     protected static $instance;
 
@@ -30,12 +38,29 @@ class Plugin
         add_action('init', [$this, 'loadTextdomain']);
         add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
         add_action('enqueue_block_editor_assets', [$this, 'blockEditorAssets'], 0);
+        add_action('plugins_loaded', [$this, 'initializeIntegrations']);
 
-        add_filter('render_block', [$this, 'overrideYoutubeEmbeds'], 10, 2);
-
-        new Admin($this->name);
+        new Admin($this->name, $this);
         new Frontend($this->name, $this);
-        new Plugins($this->name);
+
+    }
+
+    public function settings(?string $option = null)
+    {
+        $options = get_option($this->name) ?: [];
+        return $option ? ($options[$option] ?? null) : $options;
+    }
+
+    public function initializeIntegrations(): void
+    {
+        new CtxFeed($this);
+        new DataLayer($this);
+        new DuracelltommiGoogleTagManager($this);
+        new Embeds($this);
+        new FacebookForWooCommerce($this);
+        new Gravityforms($this);
+        new TiktokForBusiness($this);
+        new WpConsentApi($this);
     }
 
     /**
@@ -97,24 +122,6 @@ class Plugin
             false,
             dirname(plugin_basename($this->file)) . '/languages'
         );
-    }
-
-    /**
-     * Override youtube embed blocks with no-cookie parameter
-     */
-    public function overrideYoutubeEmbeds($block_content, $block)
-    {
-        // ignore this code in backend
-        if (is_admin()) {
-            return $block_content;
-        }
-
-        // override youtube embeds url
-        if ('core-embed/youtube' === $block['blockName']) {
-            $block_content = str_replace('youtube.com', 'youtube-nocookie.com', $block_content);
-        }
-
-        return $block_content;
     }
 
     /**
