@@ -36,7 +36,7 @@ export const NECESSARY_COOKIES = [
 /**
  * Return if user has granted the passed consents.
  *
- * @param {...Consent} consents Consent name eg. 'necessary`, `marketing`, `statistics`.
+ * @param {...Consent} consents Consent name eg. 'necessary`, `preferences`, `marketing`, `statistics`.
  * @returns {boolean} if user has granted all the consents
  */
 export function hasConsent(...consents) {

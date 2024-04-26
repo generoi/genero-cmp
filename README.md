@@ -93,7 +93,7 @@ window.generoCmp.withdraw()
 /**
  * Return if user has granted the passed consents.
  *
- * @param {...Consent} consents Consent name eg. 'necessary`, `marketing`, `statistics`.
+ * @param {...Consent} consents Consent name eg. 'necessary`, `preferences`, `marketing`, `statistics`.
  * @returns {boolean} if user has granted all the consents
  */
 window.generoCmp.hasConsent(...consents)
@@ -153,9 +153,9 @@ This is useful if content is entirely opt-in and doesnt require prompting the us
 ```html
 <script src="..." type="text/plain" data-cmp-consnet="marketing statistics"></script>
 
-<iframe cmp-src="..." data-cmp-consent="marketing"></iframe>
-<img cmp-src="..." data-cmp-consent="marketing" />
-<video cmp-src="..." data-cmp-consent="marketing"></video>
+<iframe data-cmp-src="..." data-cmp-consent="marketing"></iframe>
+<img data-cmp-src="..." data-cmp-consent="marketing" />
+<video data-cmp-src="..." data-cmp-consent="marketing"></video>
 ```
 
 ### Block elements with a message using `<gds-cmp-embed>`
