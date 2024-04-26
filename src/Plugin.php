@@ -19,12 +19,12 @@ class Plugin
     public string $path;
     public string $url;
 
-    protected static $instance;
+    protected static Plugin $instance;
 
-    public static function getInstance()
+    public static function getInstance(): self
     {
-        if (!isset(self::$instance)) {
-            self::$instance = new static();
+        if (! isset(self::$instance)) {
+            self::$instance = new self();
         }
         return self::$instance;
     }
@@ -42,7 +42,6 @@ class Plugin
 
         new Admin($this->name, $this);
         new Frontend($this->name, $this);
-
     }
 
     public function settings(?string $option = null)

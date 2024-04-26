@@ -313,6 +313,4 @@ class DataLayer
             setcookie('genero_cmp_registered', '', -10000, '/', '', ( false !== strstr(get_option('home'), 'https:') ) && is_ssl(), true);
         }
     }
-
 }
-
