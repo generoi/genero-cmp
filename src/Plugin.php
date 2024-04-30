@@ -8,6 +8,7 @@ use GeneroWP\GeneroCmp\Integrations\DuracelltommiGoogleTagManager;
 use GeneroWP\GeneroCmp\Integrations\Embeds;
 use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
 use GeneroWP\GeneroCmp\Integrations\Gravityforms;
+use GeneroWP\GeneroCmp\Integrations\Polylang;
 use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
 use GeneroWP\GeneroCmp\Integrations\WpConsentApi;
 use GeneroWP\GeneroCmp\Models\Consent;
@@ -38,7 +39,7 @@ class Plugin
         add_action('init', [$this, 'loadTextdomain']);
         add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
         add_action('enqueue_block_editor_assets', [$this, 'blockEditorAssets'], 0);
-        add_action('plugins_loaded', [$this, 'initializeIntegrations']);
+        add_action('plugins_loaded', [$this, 'initializeIntegrations'], -1);
 
         new Admin($this->name, $this);
         new Frontend($this->name, $this);
@@ -60,6 +61,7 @@ class Plugin
         new Gravityforms($this);
         new TiktokForBusiness($this);
         new WpConsentApi($this);
+        new Polylang($this);
     }
 
     /**
