@@ -59,7 +59,7 @@ ready(() => {
  */
 function evaluateTags(context = document) {
   for (const el of context.querySelectorAll(`[data-gds-cmp-consent]`)) {
-    const domConsents = el.dataset.cmpConsent.split(' ').sort();
+    const domConsents = el.dataset.gdsCmpConsent.split(' ').sort();
 
     if (!hasConsent(...domConsents)) {
       continue;
