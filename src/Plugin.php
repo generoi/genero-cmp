@@ -7,6 +7,7 @@ use GeneroWP\GeneroCmp\Integrations\DataLayer;
 use GeneroWP\GeneroCmp\Integrations\DuracelltommiGoogleTagManager;
 use GeneroWP\GeneroCmp\Integrations\Embeds;
 use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
+use GeneroWP\GeneroCmp\Integrations\GoogleAppsLogin;
 use GeneroWP\GeneroCmp\Integrations\Gravityforms;
 use GeneroWP\GeneroCmp\Integrations\Polylang;
 use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
@@ -62,6 +63,7 @@ class Plugin
         new TiktokForBusiness($this);
         new WpConsentApi($this);
         new Polylang($this);
+        new GoogleAppsLogin($this);
     }
 
     /**
