@@ -79,20 +79,12 @@ class Frontend
 
     public function enqueueAssets(): void
     {
-        if (empty($this->settings['gtm_id'])) {
-            return;
-        }
         wp_enqueue_style("{$this->name}/css");
         wp_enqueue_script("{$this->name}/js");
     }
 
     public function consentManager(): void
     {
-        // if no tag manager id is set, do nothing
-        if (empty($this->settings['gtm_id'])) {
-            return;
-        }
-
         render_block(['blockName' => 'gds/accordion']);
         render_block(['blockName' => 'gds/accordion-item']);
         render_block(['blockName' => 'core/button']);
