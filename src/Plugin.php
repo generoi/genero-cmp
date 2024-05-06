@@ -10,6 +10,7 @@ use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
 use GeneroWP\GeneroCmp\Integrations\GoogleAppsLogin;
 use GeneroWP\GeneroCmp\Integrations\Gravityforms;
 use GeneroWP\GeneroCmp\Integrations\Polylang;
+use GeneroWP\GeneroCmp\Integrations\Redirection;
 use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
 use GeneroWP\GeneroCmp\Integrations\WpConsentApi;
 use GeneroWP\GeneroCmp\Models\Consent;
@@ -64,6 +65,7 @@ class Plugin
         new WpConsentApi($this);
         new Polylang($this);
         new GoogleAppsLogin($this);
+        new Redirection($this);
     }
 
     /**
