@@ -8,7 +8,7 @@ gtag('consent', 'default', {
   ad_user_data: 'denied',
   ad_personalization: 'denied',
   analytics_storage: 'denied',
-  functionality_storagea: 'denied',
+  functionality_storage: 'denied',
   personalization_storage: 'denied',
   security_storage: 'granted',
 });
