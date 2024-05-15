@@ -11,10 +11,6 @@ class DataLayer
     public function __construct(
         protected Plugin $plugin,
     ) {
-        if (! function_exists('gtm4wp_reload_options')) {
-            return;
-        }
-
         $this->settings = $plugin->settings();
         add_filter('gds_cmp_datalayer', [$this, 'getDataLayerData']);
         add_action('wp_footer', [$this, 'wpFooter']);
