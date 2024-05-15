@@ -85,10 +85,15 @@ class Frontend
 
     public function consentManager(): void
     {
-        render_block(['blockName' => 'gds/accordion']);
-        render_block(['blockName' => 'gds/accordion-item']);
-        render_block(['blockName' => 'core/button']);
-        render_block(['blockName' => 'core/buttons']);
+        foreach (['gds/accordion', 'gds/accordion-item', 'core/button', 'core/buttons'] as $blockName) {
+            render_block([
+                'blockName' => $blockName,
+                'attrs' => [],
+                'innerBlocks' => [],
+                'innerHTML' => '',
+                'innerContent' => [],
+            ]);
+        }
 
         $settings = [];
         $settings['lang'] = get_locale();
