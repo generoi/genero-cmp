@@ -95,6 +95,7 @@ class DataLayer
             if (! empty($this->settings['incl_categories'])) {
                 $_post_cats = get_the_category();
                 if ($_post_cats) {
+                    $_post_cats = $this->sortTerms($_post_cats, 'category', get_queried_object_id());
                     $data_layer['pageCategory'] = [];
                     foreach ($_post_cats as $_one_cat) {
                         $data_layer['pageCategory'][] = $_one_cat->slug;
@@ -105,6 +106,7 @@ class DataLayer
             if (! empty($this->settings['incl_tags'])) {
                 $_post_tags = get_the_tags();
                 if ($_post_tags) {
+                    $_post_tags = $this->sortTerms($_post_tags, 'post_tag', get_queried_object_id());
                     $data_layer['pageAttributes'] = [];
                     foreach ($_post_tags as $_one_tag) {
                         $data_layer['pageAttributes'][] = $_one_tag->slug;
@@ -145,7 +147,9 @@ class DataLayer
 
                 foreach ($object_taxonomies as $one_object_taxonomy) {
                     $post_taxonomy_values = get_the_terms($GLOBALS['post']->ID, $one_object_taxonomy);
+
                     if (is_array($post_taxonomy_values)) {
+                        $post_taxonomy_values = $this->sortTerms($post_taxonomy_values, $one_object_taxonomy, get_queried_object_id());
                         $data_layer['pagePostTerms'][ $one_object_taxonomy ] = array();
                         foreach ($post_taxonomy_values as $one_taxonomy_value) {
                             $data_layer['pagePostTerms'][ $one_object_taxonomy ][] = $one_taxonomy_value->name;
@@ -301,6 +305,31 @@ class DataLayer
         }
     }
 
+    protected function sortTerms(array $terms, string $taxonomy, int $postId): array
+    {
+        $primaryTermId = match (true) {
+            function_exists('the_seo_framework') => the_seo_framework()->get_primary_term_id($postId, $taxonomy),
+            function_exists('yoast_get_primary_term_id') => yoast_get_primary_term_id($taxonomy, $postId),
+        };
+
+
+        if ($primaryTermId) {
+            usort($terms, function ($a, $b) use ($primaryTermId) {
+                $aId = $a instanceof WP_Term ? $a->term_id : $a;
+                $bId = $a instanceof WP_Term ? $b->term_id : $b;
+
+                if ($aId === $primaryTermId) {
+                    return -1;
+                }
+                if ($bId === $primaryTermId) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
+
+        return $terms;
+    }
 
     public function setLoginCookie(): void
     {
