@@ -3,6 +3,10 @@
 namespace GeneroWP\GeneroCmp\Integrations;
 
 use GeneroWP\GeneroCmp\Plugin;
+use WP_Post;
+use WP_Post_Type;
+use WP_Term;
+use WP_User;
 
 class DataLayer
 {
@@ -71,6 +75,15 @@ class DataLayer
 
         if (! empty($this->settings['incl_post_title'])) {
             $data_layer['pageTitle'] = wp_strip_all_tags(wp_title('|', false, 'right'));
+
+            $object = get_queried_object();
+            $data_layer['pageName'] = match (true) {
+                $object instanceof WP_Post => $object->post_title,
+                $object instanceof WP_Term => $object->name,
+                $object instanceof WP_Post_Type => $object->name,
+                $object instanceof WP_User => $object->display_name,
+                default => $data_layer['pageTitle'],
+            };
         }
 
         if (is_singular()) {
