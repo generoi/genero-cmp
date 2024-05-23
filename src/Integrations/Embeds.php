@@ -70,11 +70,17 @@ class Embeds
                     return $tag;
                 }
 
+                $embedDescription = apply_filters(
+                    'gds_cmp_embed_description',
+                    sprintf($description, implode(', ', $consentLabels)),
+                    $tag,
+                );
+
                 return sprintf(
                     '<gds-cmp-embed as="%s" consent="%s" description="%s" button="%s"%s>%s</gds-cmp-embed>',
                     $matches[1],
                     implode(' ', $consents),
-                    sprintf($description, implode(', ', $consentLabels)),
+                    $embedDescription,
                     $button,
                     $matches[2],
                     $matches[3],
