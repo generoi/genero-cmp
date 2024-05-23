@@ -98,6 +98,18 @@ class Admin
             ]
         );
 
+        add_settings_field(
+            $this->settings_title . '_tcfapi',
+            __('TCF API', $this->text_domain),
+            [$this, 'renderCheckbox'],
+            $this->settings_title,
+            $this->settings_title . '_general',
+            [
+                'key' => 'tcfapi',
+                'label' => __('Add integration for TCF v2 API', $this->text_domain),
+            ]
+        );
+
         add_settings_section(
             $this->settings_title . '_data_posts',
             __('Posts Data', $this->text_domain),
@@ -456,6 +468,7 @@ class Admin
             'gtm_id' => '',
             'container_off' => 0,
             'embeds_require_consent' => 0,
+            'tcfapi' => 0,
             'incl_post_type' => 1,
             'incl_categories' => 1,
             'incl_tags' => 1,

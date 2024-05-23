@@ -81,6 +81,10 @@ class Frontend
     {
         wp_enqueue_style("{$this->name}/css");
         wp_enqueue_script("{$this->name}/js");
+
+        if ($this->settings['tcfapi']) {
+            wp_enqueue_script("{$this->name}/tcfapi/js");
+        }
     }
 
     public function consentManager(): void

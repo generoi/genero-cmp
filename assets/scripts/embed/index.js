@@ -18,14 +18,16 @@ export class CmpEmbed extends HTMLElement {
   connectedCallback() {
     this.render();
 
-    if (window.gdsCmp?.hasConsent && window.gdsCmp.hasConsent(...this.consent)) {
+    const onConsentEvent = () => {
+      if (window.gdsCmp.hasConsent(...this.consent)) {
+        this.onConsentGiven();
+      }
+    }
+
+    window.addEventListener(EVENT_CONSENT, onConsentEvent);
+    // If consent has already been given
+    if (window.gdsCmp?.hasConsent?.(...this.consent)) {
       this.onConsentGiven();
-    } else {
-      window.addEventListener(EVENT_CONSENT, () => {
-        if (window.gdsCmp.hasConsent(...this.consent)) {
-          this.onConsentGiven();
-        }
-      });
     }
   }
 

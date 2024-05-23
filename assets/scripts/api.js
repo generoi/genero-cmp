@@ -40,7 +40,7 @@ export const NECESSARY_COOKIES = [
  * @returns {boolean} if user has granted all the consents
  */
 export function hasConsent(...consents) {
-  const consentData = getConsentData();
+  const consentData = window.gdsCmp.getConsentData();
 
   return consents.every((consent) => {
     return consentData.consents?.[consent] === true;
@@ -49,6 +49,8 @@ export function hasConsent(...consents) {
 
 /**
  * Return the consent data object read from the current cookie.
+ *
+ * @returns {ConsentData}
  */
 export function getConsentData() {
   return parseConsentString(
@@ -139,7 +141,7 @@ export function updateConsentMode(synchronous = false) {
  * @returns {void}
  */
 export function googleConsentMode() {
-  const consentData = getConsentData();
+  const consentData = window.gdsCmp.getConsentData();
 
   const gtmConsents = {
     ad_storage: 'denied',
@@ -177,7 +179,7 @@ export function metaConsentMode() {
     return;
   }
 
-  if (hasConsent(AD_STORAGE_CONSENT, ANALYTICS_STORAGE_CONSENT)) {
+  if (window.gdsCmp.hasConsent(AD_STORAGE_CONSENT, ANALYTICS_STORAGE_CONSENT)) {
     window.fbq('consent', 'grant');
     console.debug('meta pixel consent granted');
   } else {
@@ -196,7 +198,7 @@ export function tiktokConsentMode() {
     return;
   }
 
-  if (hasConsent(AD_STORAGE_CONSENT, ANALYTICS_STORAGE_CONSENT)) {
+  if (window.gdsCmp.hasConsent(AD_STORAGE_CONSENT, ANALYTICS_STORAGE_CONSENT)) {
     window.ttq.enableCookie();
     console.debug('tiktok enable cookies.');
   } else {
@@ -222,7 +224,7 @@ export function wpConsentMode() {
 
     window.wp_set_consent(
       consent.wpConsentApiCategory,
-      hasConsent(consent.id) ? 'allow' : 'deny'
+      window.gdsCmp.hasConsent(consent.id) ? 'allow' : 'deny'
     );
   }
 }

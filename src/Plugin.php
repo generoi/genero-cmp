@@ -100,6 +100,16 @@ class Plugin
             filemtime($this->path . '/dist/main.css')
         );
         wp_style_add_data("{$this->name}/css", 'path', "{$this->path}/dist/main.css");
+
+        wp_register_script(
+            "{$this->name}/tcfapi/js",
+            "{$this->url}/dist/tcfapi.js",
+            [],
+            filemtime($this->path . '/dist/tcfapi.js'),
+            version_compare($GLOBALS['wp_version'], '6.3') >= 0 ? ['strategy' => 'async'] : false,
+        );
+        // Support async loading if a plugin implements it.
+        wp_script_add_data("{$this->name}/tcfapi/js", 'async', true);
     }
 
     public function blockEditorAssets(): void
