@@ -86,6 +86,19 @@ class Admin
         );
 
         add_settings_field(
+            $this->settings_title . '_banner_off',
+            __('Banner OFF', $this->text_domain),
+            [$this, 'renderCheckbox'],
+            $this->settings_title,
+            $this->settings_title . '_general',
+            [
+                'key' => 'banner_off',
+                'label' => __('Do not load the consent banner.', $this->text_domain),
+                'description' => __('In case you use a third party banner', $this->text_domain),
+            ]
+        );
+
+        add_settings_field(
             $this->settings_title . '_embeds_require_consent',
             __('Block embeds', $this->text_domain),
             [$this, 'renderCheckbox'],
@@ -467,6 +480,7 @@ class Admin
         return [
             'gtm_id' => '',
             'container_off' => 0,
+            'banner_off' => 0,
             'embeds_require_consent' => 0,
             'tcfapi' => 0,
             'incl_post_type' => 1,
