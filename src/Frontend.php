@@ -85,7 +85,7 @@ class Frontend
         wp_enqueue_style("{$this->name}/css");
         wp_enqueue_script("{$this->name}/js");
 
-        if ($this->settings['tcfapi']) {
+        if ($this->settings['tcfapi'] ?? false) {
             wp_enqueue_script("{$this->name}/tcfapi/js");
         }
     }

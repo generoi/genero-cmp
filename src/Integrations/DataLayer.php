@@ -308,7 +308,7 @@ class DataLayer
     protected function sortTerms(array $terms, string $taxonomy, int $postId): array
     {
         $primaryTermId = match (true) {
-            function_exists('the_seo_framework') => the_seo_framework()->get_primary_term_id($postId, $taxonomy),
+            function_exists('the_seo_framework') => the_seo_framework()->data()->plugin()->post()->get_primary_term_id($postId, $taxonomy),
             function_exists('yoast_get_primary_term_id') => yoast_get_primary_term_id($taxonomy, $postId),
         };
 
