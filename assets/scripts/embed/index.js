@@ -1,6 +1,7 @@
 import { EVENT_CONSENT, NECESSARY_STORAGE_CONSENT } from '../api';
 import './index.scss';
 
+const EVENT_BEFORE_REPLACE = 'gds-cmp-embed.before-replace';
 const EVENT_REPLACED = 'gds-cmp-embed.replaced';
 const DEFAULT_CONSENT = NECESSARY_STORAGE_CONSENT;
 const DEFAULT_TAG_NAME = 'iframe';
@@ -17,14 +18,16 @@ export class CmpEmbed extends HTMLElement {
   connectedCallback() {
     this.render();
 
-    if (window.gdsCmp?.hasConsent && window.gdsCmp.hasConsent(...this.consent)) {
+    const onConsentEvent = () => {
+      if (window.gdsCmp.hasConsent(...this.consent)) {
+        this.onConsentGiven();
+      }
+    }
+
+    window.addEventListener(EVENT_CONSENT, onConsentEvent);
+    // If consent has already been given
+    if (window.gdsCmp?.hasConsent?.(...this.consent)) {
       this.onConsentGiven();
-    } else {
-      window.addEventListener(EVENT_CONSENT, () => {
-        if (window.gdsCmp.hasConsent(...this.consent)) {
-          this.onConsentGiven();
-        }
-      });
     }
   }
 
@@ -57,6 +60,19 @@ export class CmpEmbed extends HTMLElement {
   }
 
   onConsentGiven() {
+    const isReplaceAllowed = this.dispatchEvent(new CustomEvent(EVENT_BEFORE_REPLACE, {
+      cancelable: true,
+      bubbles: true,
+    }));
+
+    if (!isReplaceAllowed) {
+      console.debug('embed replace cancelled');
+      return;
+    }
+    this.replaceElement();
+  }
+
+  replaceElement() {
     const newTag = document.createElement(this.as);
     for (const attribute of this.getAttributeNames()) {
       if (['consent', 'as'].includes(attribute)) {

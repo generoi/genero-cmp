@@ -19,15 +19,17 @@ function ready(fn) {
   document.addEventListener('DOMContentLoaded', fn);
 }
 
+window.gdsCmp = {
+  hasConsent,
+  getConsentData,
+  evaluateTags,
+  ...(window.gdsCmp || {}),
+};
+
 ready(() => {
   // Initialize the cookie consent banenr and expose window.gdsCmp object.
   const cookieConsentContainer = document.querySelector('.cookie-consent');
   if (cookieConsentContainer) {
-    window.gdsCmp = {
-      ...(window.gdsCmp || {}),
-      hasConsent,
-      evaluateTags,
-    };
     window.gdsCmp = {
       ...window.gdsCmp,
       ...cookieConsent(cookieConsentContainer),
@@ -38,7 +40,7 @@ ready(() => {
   for (const link of document.querySelectorAll('.js-gds-cmp-show')) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
-      cookieConsentContainer.show();
+      window.gdCmp.show?.();
     });
   }
 
@@ -46,7 +48,7 @@ ready(() => {
   document.addEventListener('click', function ({target}) {
     if (target.matches('[data-gds-cmp-trigger]')) {
       const trigger = target.dataset.gdsCmpTrigger;
-      cookieConsentContainer[trigger]?.();
+      window.gdCmp[trigger]?.();
     }
   }, {passive: true});
 });
@@ -91,7 +93,7 @@ window.addEventListener(EVENT_CONSENT, () => evaluateTags());
 
 // Add has-gds-cmp-consent--{'marketing'|'analytics'|'necessary'} classes to the body element
 window.addEventListener(EVENT_CONSENT, () => {
-  const consentData = getConsentData();
+  const consentData = window.gdsCmp.getConsentData();
 
   for (const [consent, value] of Object.entries(consentData.consents)) {
     document.body.classList.toggle(`has-gds-cmp-consent--${consent}`, value);

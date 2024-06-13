@@ -14,8 +14,11 @@ class Frontend
 
         add_action('wp_head', [$this, 'wpHead'], 9);
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets'], 0);
-        add_action('wp_body_open', [$this, 'consentManager']);
         add_filter('wp_resource_hints', [$this, 'addPreconnectHint'], 10, 2);
+
+        if (empty($this->settings['banner_off'])) {
+            add_action('wp_body_open', [$this, 'consentManager']);
+        }
     }
 
     public function addPreconnectHint(array $hints, string $type): array
@@ -81,6 +84,10 @@ class Frontend
     {
         wp_enqueue_style("{$this->name}/css");
         wp_enqueue_script("{$this->name}/js");
+
+        if ($this->settings['tcfapi']) {
+            wp_enqueue_script("{$this->name}/tcfapi/js");
+        }
     }
 
     public function consentManager(): void
