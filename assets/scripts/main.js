@@ -26,6 +26,12 @@ window.gdsCmp = {
   ...(window.gdsCmp || {}),
 };
 
+// Delete legacy wp-gds-cmp cookie
+if (/gds-consent=[01],[01],[01],[01]/.test(document.cookie)) {
+  const host = document.location.host.split('.').slice(-2).join('.');
+  document.cookie = `gds-consent=; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=.${host}; path=/`;
+}
+
 ready(() => {
   // Initialize the cookie consent banenr and expose window.gdsCmp object.
   const cookieConsentContainer = document.querySelector('.cookie-consent');
