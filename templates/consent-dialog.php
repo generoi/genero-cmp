@@ -40,7 +40,7 @@
             </gds-cmp-accordion>
         </div>
     <?php endif; ?>
-    <div class="wp-block-buttons cookie-consent__buttons">
+    <div class="wp-block-buttons is-layout-flex cookie-consent__buttons">
         <div class="wp-block-button is-style-outline" id="accept-selected-button">
             <button
                 data-cookie-consent-accept-selected
