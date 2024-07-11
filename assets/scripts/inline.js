@@ -1,5 +1,11 @@
-import { getConsentData, updateConsentMode } from './api';
+import { getConsentData, hasConsent, updateConsentMode } from './api';
 import { gtag } from './utils';
+
+window.gdsCmp = {
+  hasConsent,
+  getConsentData,
+  ...(window.gdsCmp || {}),
+};
 
 // Default consent
 // https://support.google.com/tagmanager/answer/10718549?hl=en

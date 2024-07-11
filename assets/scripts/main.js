@@ -10,7 +10,7 @@ import './accordion-item';
 import './toggle-button';
 import './embed';
 import cookieConsent from './cookie-consent';
-import {EVENT_CONSENT, getConsentData, hasConsent } from './api';
+import {EVENT_CONSENT, hasConsent } from './api';
 
 function ready(fn) {
   if (document.readyState !== 'loading') {
@@ -20,8 +20,6 @@ function ready(fn) {
 }
 
 window.gdsCmp = {
-  hasConsent,
-  getConsentData,
   evaluateTags,
   ...(window.gdsCmp || {}),
 };
