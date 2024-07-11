@@ -44,7 +44,7 @@ ready(() => {
   for (const link of document.querySelectorAll('.js-gds-cmp-show')) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
-      window.gdCmp.show?.();
+      window.gdsCmp.show?.();
     });
   }
 
@@ -52,7 +52,7 @@ ready(() => {
   document.addEventListener('click', function ({target}) {
     if (target.matches('[data-gds-cmp-trigger]')) {
       const trigger = target.dataset.gdsCmpTrigger;
-      window.gdCmp[trigger]?.();
+      window.gdsCmp[trigger]?.();
     }
   }, {passive: true});
 });
