@@ -1,5 +1,5 @@
 import { COOKIE_NAME, EVENT_CONSENT, NECESSARY_COOKIES, buildConsentString, getConsentData, hasConsent, updateConsentMode } from '../api';
-import { getCookie, setCookie, removeCookie, getAllCookies } from '../utils';
+import { getCookie, setCookie, removeCookie, getAllCookies, gtag } from '../utils';
 import { Consents } from '../api';
 import './index.scss';
 
@@ -102,6 +102,11 @@ export default function init(modal) {
     runEvent();
     updateConsentMode();
     requestAnimationFrame(() => modal.hide());
+    setTimeout(() => sendGtagEvents(), 1);
+  }
+
+  function sendGtagEvents() {
+    gtag('event', 'gds-cmp.update');
   }
 
   // Accept selected cookies and close modal

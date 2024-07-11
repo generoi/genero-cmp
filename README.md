@@ -215,6 +215,10 @@ function init(el) {
 init(document.querySelector('[data-custom-function]'));
 ```
 
+### GTM events
+
+Whenever users change consent the `gds-cmp.update` event will be sent to gtag. By creating a trigger for this event and adding it together with the _Consent initialization_ trigger, tags will run on the first page load after consent is updated.
+
 ## Development
 
 Install dependencies
