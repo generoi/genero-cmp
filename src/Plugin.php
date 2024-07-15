@@ -5,6 +5,7 @@ namespace GeneroWP\GeneroCmp;
 use GeneroWP\GeneroCmp\Integrations\CtxFeed;
 use GeneroWP\GeneroCmp\Integrations\DataLayer;
 use GeneroWP\GeneroCmp\Integrations\DuracelltommiGoogleTagManager;
+use GeneroWP\GeneroCmp\Integrations\ElfsightInstagramFeed;
 use GeneroWP\GeneroCmp\Integrations\Embeds;
 use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
 use GeneroWP\GeneroCmp\Integrations\GoogleAppsLogin;
@@ -13,6 +14,7 @@ use GeneroWP\GeneroCmp\Integrations\Polylang;
 use GeneroWP\GeneroCmp\Integrations\Redirection;
 use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
 use GeneroWP\GeneroCmp\Integrations\WpConsentApi;
+use GeneroWP\GeneroCmp\Integrations\WpTiktokFeed;
 use GeneroWP\GeneroCmp\Models\Consent;
 
 class Plugin
@@ -66,6 +68,8 @@ class Plugin
         new Polylang($this);
         new GoogleAppsLogin($this);
         new Redirection($this);
+        new WpTiktokFeed($this);
+        new ElfsightInstagramFeed($this);
     }
 
     /**
