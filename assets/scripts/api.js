@@ -106,8 +106,8 @@ function parseConsentString(consentString) {
             [NECESSARY_STORAGE_CONSENT]: parsedData.shift() === '1',
             [ANALYTICS_STORAGE_CONSENT]: parsedData.shift() === '1',
             [AD_STORAGE_CONSENT]: parsedData.shift() === '1',
-          }
-        }
+          },
+        },
       };
     }
   }

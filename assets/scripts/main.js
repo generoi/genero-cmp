@@ -71,9 +71,10 @@ function evaluateTags(context = document) {
       continue;
     }
 
+    let newTag;
     switch (el.tagName) {
       case 'SCRIPT':
-        const newTag = el.cloneNode(true);
+        newTag = el.cloneNode(true);
         newTag.type = 'text/javascript';
         delete newTag.dataset.gdsCmpConsent;
         el.replaceWith(newTag);

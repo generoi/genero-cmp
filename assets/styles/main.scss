@@ -22,7 +22,7 @@ $consents: (
   }
 
   @each $consent2 in $consents {
-    @if ($consent != $consent2) {
+    @if $consent != $consent2 {
       body.has-gds-cmp-consent--#{$consent}.has-gds-cmp-consent--#{$consent2} [data-consent-optout*="#{$consent}"][data-consent-optout*="#{$consent2}"] {
         display: none !important;
       }

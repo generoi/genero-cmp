@@ -1,9 +1,10 @@
+/* eslint no-unused-vars:"off" */
 import {
   AD_STORAGE_CONSENT,
   ANALYTICS_STORAGE_CONSENT,
   EVENT_CONSENT,
   NECESSARY_STORAGE_CONSENT,
-  PREFERENCES_STORAGE_CONSENT
+  PREFERENCES_STORAGE_CONSENT,
  } from './api';
 
 /**
@@ -92,7 +93,7 @@ window.gdsCmp = {
   },
   withdraw() {
     // @TODO
-  }
+  },
 }
 
 tcfapi('addEventListener', 2, (tcData, success) => {

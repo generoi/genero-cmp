@@ -5,7 +5,7 @@ on:
       - published
 
 env:
-  NODE_VERSION: 16
+  NODE_VERSION: 20
   PHP_VERSION: 8.1
 
 jobs:
