@@ -85,7 +85,7 @@ function parseConsentString(consentString) {
   };
 
   try {
-    const parsedData = JSON.parse(consentString);
+    const parsedData = JSON.parse(decodeURIComponent(consentString));
     if (isObject(parsedData)) {
       if (isObject(parsedData.consents)) {
         data.consents = parsedData.consents;
