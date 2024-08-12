@@ -42,7 +42,7 @@ msgstr "Tämä upotus lataa sisältöä kolmannelta osapuolelta ja vaatii siksi 
 
 #: src/Frontend.php:395
 msgid "Modify preferences"
-msgstr "Muuttaa asetuksia"
+msgstr "Muuta asetuksia"
 
 #: src/Integrations/WpConsentApi.php:32
 #: src/Integrations/WpConsentApi.php:41
