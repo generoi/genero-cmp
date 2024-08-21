@@ -28,6 +28,7 @@ window.gdsCmp = {
 if (/gds-consent=\d,[01],[01],[01]/.test(document.cookie)) {
   const host = document.location.host.split('.').slice(-2).join('.');
   document.cookie = `gds-consent=; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=.${host}; path=/`;
+  document.cookie = `gds-consent-hash=; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=.${host}; path=/`;
 }
 
 ready(() => {
