@@ -10,6 +10,7 @@ use GeneroWP\GeneroCmp\Integrations\Embeds;
 use GeneroWP\GeneroCmp\Integrations\FacebookForWooCommerce;
 use GeneroWP\GeneroCmp\Integrations\GoogleAppsLogin;
 use GeneroWP\GeneroCmp\Integrations\Gravityforms;
+use GeneroWP\GeneroCmp\Integrations\PixelYourSite;
 use GeneroWP\GeneroCmp\Integrations\Polylang;
 use GeneroWP\GeneroCmp\Integrations\Redirection;
 use GeneroWP\GeneroCmp\Integrations\TiktokForBusiness;
@@ -70,6 +71,7 @@ class Plugin
         new Redirection($this);
         new WpTiktokFeed($this);
         new ElfsightInstagramFeed($this);
+        new PixelYourSite($this);
     }
 
     /**
