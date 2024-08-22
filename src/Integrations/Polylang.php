@@ -41,7 +41,7 @@ class Polylang
             $script = str_replace(' type="text/javascript"', '', $script);
         }
 
-        $script = str_replace(['<script>', '</script>'], '', $script);
+        $script = str_replace(['<script>', '</script>', "<script type='text/javascript'>"], '', $script);
         echo wp_get_inline_script_tag($script, [
             'data-gds-cmp-consent' => Consent::PREFERENCES,
             'type' => 'text/plain',
