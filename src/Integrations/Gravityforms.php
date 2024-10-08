@@ -32,7 +32,7 @@ class Gravityforms
 
     public function setDefaultPersonalDataSettings(array $formMeta, int $formId, string $metaName): array
     {
-        if (isset($formData['personalData']) || $metaName !== 'display_meta') {
+        if (isset($formMeta['personalData']) || $metaName !== 'display_meta') {
             return $formMeta;
         }
         $formMeta['personalData']['preventIP'] = true;
