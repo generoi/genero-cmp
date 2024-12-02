@@ -45,6 +45,7 @@ class Plugin
         add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
         add_action('enqueue_block_editor_assets', [$this, 'blockEditorAssets'], 0);
         add_action('plugins_loaded', [$this, 'initializeIntegrations'], -1);
+        add_filter('register_block_type_args', [$this, 'registerBlockAttributes']);
 
         new Admin($this->name, $this);
         new Frontend($this->name, $this);
@@ -72,6 +73,19 @@ class Plugin
         new WpTiktokFeed($this);
         new ElfsightInstagramFeed($this);
         new PixelYourSite($this);
+    }
+
+    public function registerBlockAttributes(array $args): array
+    {
+        $args['attributes']['consentOptin'] = [
+            'type' => 'boolean',
+            'default' => false,
+        ];
+        $args['attributes']['consentOptout'] = [
+            'type' => 'boolean',
+            'default' => false,
+        ];
+        return $args;
     }
 
     /**
