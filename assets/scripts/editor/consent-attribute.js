@@ -114,7 +114,7 @@ const withInspectorControl = createHigherOrderComponent((BlockEdit) => {
 }, 'withInspectorControl');
 
 function addSaveProps(extraProps, blockType, attributes) {
-  if (isBlockSupported(blockType) && attributes.consents.length) {
+  if (isBlockSupported(blockType) && attributes.consents?.length) {
       const mode = attributes?.consentOptin ? 'optin' : 'optout';
       extraProps[`data-gds-cmp-consent-${mode}`] = attributes.consents.join(' ');
   }
