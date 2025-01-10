@@ -73,6 +73,11 @@ export class CmpEmbed extends HTMLElement {
   }
 
   replaceElement() {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.replaceElement());
+      return;
+    }
+
     const newTag = document.createElement(this.as);
     for (const attribute of this.getAttributeNames()) {
       if (['consent', 'as'].includes(attribute)) {
