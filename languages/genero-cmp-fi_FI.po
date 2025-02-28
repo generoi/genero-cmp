@@ -1,0 +1,138 @@
+# Copyright (C) 2023 Genero
+# This file is distributed under the MIT License.
+msgid ""
+msgstr ""
+"Project-Id-Version: Genero CMP 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/genero-cmp\n"
+"POT-Creation-Date: 2023-04-18T10:27:26+00:00\n"
+"PO-Revision-Date: 2023-04-18 13:02+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi_FI\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Domain: genero-cmp\n"
+
+#. Plugin Name of the plugin
+msgid "Genero CMP"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "http://genero.fi"
+msgstr ""
+
+#. Description of the plugin
+msgid "CMP Plugin"
+msgstr ""
+
+#. Author of the plugin
+msgid "Genero"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://genero.fi/"
+msgstr ""
+
+#: src/Frontend.php:394
+msgid "Viewing this embed loads content from a third party and thus requires <em>%s</em> consent."
+msgstr "Tämä upotus lataa sisältöä kolmannelta osapuolelta ja vaatii siksi <em>%s</em> suostumuksen."
+
+#: src/Frontend.php:395
+msgid "Modify preferences"
+msgstr "Muuta asetuksia"
+
+#: src/Integrations/WpConsentApi.php:32
+#: src/Integrations/WpConsentApi.php:41
+msgid "1 year"
+msgstr ""
+
+#: src/Integrations/WpConsentApi.php:33
+msgid "Stores users consent preference"
+msgstr ""
+
+#: src/Integrations/WpConsentApi.php:42
+msgid "Stores a hash of the consent options last time consent was given so that any changes will prompt for a new consent"
+msgstr ""
+
+#: src/Plugin.php:127
+msgid "Necessary"
+msgstr "Välttämättömät"
+
+#: src/Plugin.php:128
+msgid ""
+"These cookies are technically required for our core website to work "
+"properly, e.g. security functions or your cookie consent preferences."
+msgstr ""
+"Nämä evästeet ovat välttämättömiä, jotta verkkosivumme toimisi oikein, "
+"esimerkiksi suojaustoiminnot tai evästeiden suostumusasetukset."
+
+#: src/Plugin.php:137
+msgid "Preferences"
+msgstr "Mieltymykset"
+
+#: src/Plugin.php:138
+msgid "Preference cookies enable a website to remember information that changes the way the website behaves or looks, like your preferred language or the region that you are in."
+msgstr "Mieltymysevästeiden avulla sivusto tallentaa tietoja, jotka muuttavat sivuston käyttäytymistä ja ulkonäköä, kuten kielivalintoja tai käyttäjän sijainteja."
+
+#: src/Plugin.php:146
+msgid "Statistics"
+msgstr "Tilastot"
+
+#: src/Plugin.php:147
+msgid ""
+"In order to improve our website going forward, we anonymously collect data "
+"for statistical and analytical purposes. With these cookies we can, for "
+"instance, monitor the number or duration of visits of specific pages of our "
+"website helping us in optimizing user experience."
+msgstr ""
+"Parantaaksemme verkkosivuamme keräämme nimettömästi tietoja tilastollisiin "
+"ja analyyttisiin tarkoituksiin. Näiden evästeiden avulla voimme esimerkiksi "
+"seurata verkkosivumme tiettyjen sivujen käyntien määrää tai kestoa, mikä "
+"auttaa meitä optimoimaan käyttäjäkokemusta."
+
+#: src/Plugin.php:154
+msgid "Marketing"
+msgstr "Markkinointi"
+
+#: src/Plugin.php:155
+msgid ""
+"These cookies help us in measuring and optimizing our marketing efforts."
+msgstr ""
+"Nämä evästeet auttavat meitä mittaamaan ja optimoimaan markkinointitoimiamme."
+
+#: templates/consent-dialog.php:10
+msgid "Cookie Preferences"
+msgstr "Evästeasetukset"
+
+#: templates/consent-dialog.php:12
+msgid ""
+"We use cookies to provide a better user experience and personalised service. "
+"By consenting to the use of cookies, we can develop an even better service "
+"and will be able to provide content that is interesting to you. You are in "
+"control of your cookie preferences, and you may change them at any time. "
+"Read more about our cookies."
+msgstr ""
+"Käytämme evästeitä tarjotaksemme paremman käyttökokemuksen ja "
+"henkilökohtaista palvelua. Suostumalla evästeiden käyttöön voimme kehittää "
+"entistä parempaa palvelua ja tarjota sinulle kiinnostavaa sisältöä. Sinulla "
+"on hallinta evästeasetuksistasi, ja voit muuttaa niitä milloin tahansa. Lue "
+"lisää evästeistämme."
+
+#: templates/consent-dialog.php:48
+msgid "Accept selected cookies"
+msgstr "Hyväksy valitut evästeet"
+
+#: templates/consent-dialog.php:56
+msgid "Edit cookie settings"
+msgstr "Muokkaa evästeasetuksia"
+
+#: templates/consent-dialog.php:63
+msgid "Decline all"
+msgstr "Kiellä kaikki"
+
+#: templates/consent-dialog.php:70
+msgid "Accept all cookies"
+msgstr "Hyväksy kaikki evästeet"
