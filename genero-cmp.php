@@ -3,7 +3,7 @@
 Plugin Name:        Genero CMP
 Plugin URI:         http://genero.fi
 Description:        CMP Plugin
-Version:            1.1.8
+Version:            2.1.6.1
 Author:             Genero
 Author URI:         http://genero.fi/
 License:            MIT License
