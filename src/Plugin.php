@@ -130,6 +130,16 @@ class Plugin
         );
         // Support async loading if a plugin implements it.
         wp_script_add_data("{$this->name}/tcfapi/js", 'async', true);
+
+        wp_register_script(
+            "{$this->name}/onetrust/js",
+            "{$this->url}/dist/onetrust.js",
+            [],
+            filemtime($this->path . '/dist/onetrust.js'),
+            version_compare($GLOBALS['wp_version'], '6.3') >= 0 ? ['strategy' => 'async'] : false,
+        );
+        // Support async loading if a plugin implements it.
+        wp_script_add_data("{$this->name}/onetrust/js", 'async', true);
     }
 
     public function blockEditorAssets(): void
