@@ -107,7 +107,7 @@ class Frontend
 
     protected function view(string $view, array $args = []): void
     {
-        if (! get_template_part('genero-cmp/' . $view, null, $args)) {
+        if (! get_template_part('genero-cmp/' . str_replace('.php', '', $view), null, $args)) {
             load_template(dirname(__DIR__) . "/templates/$view", true, $args);
         }
     }
