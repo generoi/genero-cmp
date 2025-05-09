@@ -47,8 +47,8 @@ class Embeds
                 [$tag, $element, $attributes, $innerContent] = $matches;
 
                 $consents = match (true) {
-                    str_contains($tag, 'youtube') => [Consent::MARKETING, Consent::STATISTICS],
-                    str_contains($tag, 'google.com/maps') => [Consent::MARKETING, Consent::STATISTICS],
+                    str_contains($tag, 'youtube') => [Consent::MARKETING],
+                    str_contains($tag, 'google.com/maps') => [Consent::MARKETING],
                     default => [],
                 };
 

@@ -81,6 +81,10 @@ class Frontend
         if ($this->settings['tcfapi'] ?? false) {
             wp_enqueue_script("{$this->name}/tcfapi/js");
         }
+
+        if ($this->settings['onetrust'] ?? false) {
+            wp_enqueue_script("{$this->name}/onetrust/js");
+        }
     }
 
     public function consentManager(): void
