@@ -16,23 +16,12 @@
   "support": {
     "issues": "https://github.com/generoi/genero-cmp/issues"
   },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://wpackagist.org"
-    },
-    {
-      "type": "composer",
-      "url": "https://packagist.minasithil.genero.fi/"
-    }
-  ],
+  "repositories": [],
   "require": {
     "php": ">=7.0.0"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^3.7",
-    "consolidation/robo": "^3.0",
-    "generoi/robo-genero": "dev-master"
+    "squizlabs/php_codesniffer": "^3.7"
   },
   "autoload": {
     "psr-4": {
