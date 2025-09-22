@@ -5,6 +5,7 @@
     persistent
     scroll-lock
     data-cookie-consent-hash="<?php echo esc_attr($args['hash']); ?>"
+    id="gds-cmp-modal-dialog"
     data-configs="<?php echo esc_html(wp_json_encode($args['settings'])); ?>"
 >
     <h2 id="cc-heading"><?php echo esc_html(__('Cookie Preferences', 'genero-cmp')); ?></h2>

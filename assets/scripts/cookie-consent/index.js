@@ -101,7 +101,7 @@ export default function init(modal) {
     setCookie(`${COOKIE_NAME}-hash`, hash);
     runEvent();
     updateConsentMode();
-    requestAnimationFrame(() => modal.hide());
+    requestAnimationFrame(() => modal.visible = false);
     setTimeout(() => sendGtagEvents(), 1);
   }
 
@@ -139,16 +139,16 @@ export default function init(modal) {
   return {
     modal,
     show() {
-      modal.show();
+      modal.visible = true;
     },
     hide() {
-      modal.hide();
+      modal.visible = false;
     },
     withdraw() {
       removeNonNecessaryCookies();
       removeCookie(COOKIE_NAME);
       removeCookie(`${COOKIE_NAME}-hash`);
-      modal.show();
+      modal.visible = true;
     },
   }
 }
