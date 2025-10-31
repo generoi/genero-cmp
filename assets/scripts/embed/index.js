@@ -9,8 +9,6 @@ const DEFAULT_TAG_NAME = 'iframe';
 export class CmpEmbed extends HTMLElement {
   #buttonEl;
 
-  #consentGiven = false;
-
   constructor() {
     super();
 
@@ -31,10 +29,6 @@ export class CmpEmbed extends HTMLElement {
     if (window.gdsCmp?.hasConsent?.(...this.consent)) {
       this.onConsentGiven();
     }
-
-    setTimeout(() => {
-      this.onConsentEvent();
-    }, 1000);
   }
 
   static get observedAttributes() {
@@ -66,9 +60,6 @@ export class CmpEmbed extends HTMLElement {
   }
 
   onConsentGiven() {
-    if (this.#consentGiven) {
-      return;
-    }
     const isReplaceAllowed = this.dispatchEvent(new CustomEvent(EVENT_BEFORE_REPLACE, {
       cancelable: true,
       bubbles: true,
@@ -79,7 +70,6 @@ export class CmpEmbed extends HTMLElement {
       return;
     }
 
-    this.#consentGiven = true;
     this.replaceElement();
   }
 
