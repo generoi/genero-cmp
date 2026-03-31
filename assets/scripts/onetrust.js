@@ -83,3 +83,20 @@ if (typeof window.CMPConsent !== 'undefined') {
     runEvent();
   }, {any: true});
 }
+
+// Unblock consent-gated content when consent changes without requiring
+// a page reload. The initial gds-cmp.consent event only fires once, so
+// subsequent consent changes need to be handled separately.
+window.addEventListener('CMPConsentUpdated', function () {
+  // Unblock gds-cmp-embed elements (e.g. YouTube iframes)
+  document.querySelectorAll('gds-cmp-embed').forEach(function (el) {
+    var consent = (el.getAttribute('consent') || 'necessary').split(' ');
+    if (window.gdsCmp?.hasConsent?.(...consent)) {
+      el.onConsentGiven();
+    }
+  });
+  // Unblock script/img/video/iframe with data-gds-cmp-consent
+  if (typeof window.gdsCmp?.evaluateTags === 'function') {
+    window.gdsCmp.evaluateTags();
+  }
+});
