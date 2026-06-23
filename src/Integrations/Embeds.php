@@ -29,7 +29,7 @@ class Embeds
             return $block_content;
         }
 
-        if ($block['blockName'] === 'core-embed/youtube') {
+        if (($block['blockName'] ?? null) === 'core-embed/youtube') {
             $block_content = str_replace('youtube.com', 'youtube-nocookie.com', $block_content);
         }
 
