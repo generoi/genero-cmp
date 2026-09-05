@@ -48,6 +48,49 @@ function removeNonNecessaryCookies() {
 }
 
 /**
+ * Whether the dialog has to be shown at all: either nothing has been stored yet,
+ * or what was stored was agreed against a different set of categories than the
+ * one this page ships.
+ *
+ * Everything this reads — the two cookies and the hash attribute — is available
+ * the moment the element is parsed, which is what lets the decision happen
+ * before DOMContentLoaded.
+ *
+ * @param {HTMLElement} modal Reference to the <gds-cmp-modal-dialog> element
+ * @returns {boolean}
+ */
+export function needsConsent(modal) {
+  const consents = getConsentData().consents;
+  const consentHash = getCookie(`${COOKIE_NAME}-hash`);
+
+  if (!Object.keys(consents).length || !consentHash) {
+    return true;
+  }
+
+  return consentHash !== modal.attributes['data-cookie-consent-hash']?.value;
+}
+
+/**
+ * Show the dialog at most once.
+ *
+ * The early upgrade-time pass and the later init pass can both conclude that the
+ * dialog is needed; without this guard the second one dispatches another show,
+ * and show() moves focus — which would yank it back out of whatever the visitor
+ * had already tabbed to inside the dialog.
+ *
+ * @param {HTMLElement} modal Reference to the <gds-cmp-modal-dialog> element
+ * @returns {void}
+ */
+export function showOnce(modal) {
+  if (modal.dataset.gdsCmpShown === '1') {
+    return;
+  }
+
+  modal.dataset.gdsCmpShown = '1';
+  modal.visible = true;
+}
+
+/**
  * @param {HTMLElement} modal Reference to the <gds-cmp-modal-dialog> element
  * @returns {void}
  */
@@ -72,7 +115,7 @@ export default function init(modal) {
   // Display the modal if there's no cookie
   if (!hasConsented || !consentHash) {
     console.debug('missing consent cookie', consents, consentHash);
-    modal.visible = true;
+    showOnce(modal);
   }
 
   // Pre-fill the inputs according to the cookie value
@@ -83,7 +126,7 @@ export default function init(modal) {
   // Display the modal if the cookie hash doesn't match the current hash
   if (consentHash !== hash) {
     console.debug('consent hash changed', consentHash, hash);
-    modal.visible = true;
+    showOnce(modal);
     version++;
   }
 
