@@ -44,10 +44,30 @@ if (/gds-consent=\d,[01],[01],[01]/.test(document.cookie)) {
  * the checkboxes, which are children the parser may not have reached yet.
  *
  * Measured on the front page of a production-sized site, 412px viewport at 4x CPU
- * throttling, six runs per arm interleaved to spread drift: final LCP median
- * 806ms -> 566ms, faster in 6/6 paired runs. The LCP element is the dialog's own
- * description paragraph in both arms — at ~57,000px it is roughly four times the
- * area of the page's <h1>, so nothing else is in contention for it.
+ * throttling, ten runs per arm interleaved to spread drift:
+ *
+ *     LCP median            960ms -> 512ms
+ *     dialog gets layout    338ms -> 172ms
+ *     paired wins           8/10
+ *
+ * The LCP element is the dialog's own description paragraph in both arms — at
+ * ~57,000px it is roughly four times the area of the page's <h1>, so nothing else
+ * is in contention for it.
+ *
+ * Two things worth knowing before optimising this further:
+ *
+ * LCP equals FCP in every patched run. The dialog is ready at ~172ms and the first
+ * paint does not happen until ~512ms, so it is no longer the dialog that decides
+ * when the banner appears — it lands in the first paint the page manages. Moving
+ * the chrome out of the shadow root to render it as plain HTML would take that
+ * 172ms to ~0ms and would not move LCP at all; whatever is gating FCP is the thing
+ * left to fix, and it is not this.
+ *
+ * Slow runs are slow from FCP onward, in both arms, and are the environment rather
+ * than this change: the tail cases pair 1884ms LCP with 1884ms FCP, and the
+ * unpatched arm has its own 4388/4244. An earlier six-run pass reported "6/6 paired
+ * wins" and a reviewer refuted it; ten runs give 8/10, and the LCP-equals-FCP
+ * reading is what separates a real stall from a slow page.
  */
 customElements.whenDefined('gds-cmp-modal-dialog').then(() => {
   (function attempt() {
